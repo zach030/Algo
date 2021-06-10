@@ -21,10 +21,14 @@ type List struct {
 	Length int
 }
 
-func NewListWithHead(ele element)*List {
+// 哨兵机制，带头元素
+func NewListWithHead()*List {
 	return &List{
-		Head: NewNode(ele),
-		Length: 1,
+		Head: &Node{
+			Ele:  Val{},
+			Next: nil,
+		},
+		Length: 0,
 	}
 }
 
@@ -74,8 +78,27 @@ func (l *List) DeleteWithPos(i int) {
 	}
 }
 
+//todo 删除指定元素
 func (l *List) DeleteElement(i interface{}) {
 	head := l.Head
+
+	for head!=nil{
+		if head.Ele.Get()!=i{
+			break
+		}
+		head = head.Next
+	}
+	prev := head
+	curr := head
+	for curr!=nil{
+		if curr.Ele.Get()==i{
+			prev.Next = curr.Next
+		}else{
+			prev = curr
+		}
+		curr = curr.Next
+	}
+
 	for head!=nil{
 		prev := head.Next
 		if prev.Ele.Get()==i{

@@ -5,7 +5,7 @@ import (
 )
 
 func TestList_Add(t *testing.T) {
-	l := NewListWithHead(Val{Value: 1})
+	l := NewListWithHead()
 	l.AddToLast(2)
 	l.AddToLast(3)
 	l.AddToLast(4)

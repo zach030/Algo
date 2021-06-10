@@ -18,10 +18,7 @@ func NewLRU(max int64)*LRU{
 	return &LRU{
 		maxSize: max,
 		currSize: 0,
-		ll:    list.NewListWithHead(list.Val{Value: ele{
-			key:   "magic",
-			value: "lru",
-		}}),
+		ll:    list.NewListWithHead(),
 		cache: make(map[string]list.Val,0),
 	}
 }
