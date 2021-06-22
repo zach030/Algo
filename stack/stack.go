@@ -2,6 +2,7 @@ package stack
 
 import "log"
 
+// 线性队列
 type ArrStack struct {
 	stack []string
 	len   int
@@ -35,4 +36,8 @@ func (a *ArrStack) pop() string {
 	a.stack = a.stack[:a.len-1]
 	a.len--
 	return s
+}
+
+type LinkedStack struct {
+
 }

@@ -1,6 +1,9 @@
 package queue
 
-import "log"
+import (
+	"Algo/list"
+	"log"
+)
 
 type Queue interface {
 	EnQueue(string2 string) bool
@@ -53,8 +56,14 @@ func (s *SeqQueue) DeQueue() string {
 
 // 链式队列
 type LinkedQueue struct {
+	head *list.Node
+	tail *list.Node
 }
 
+func NewLinkedQueue()*LinkedQueue{
+	lq := &LinkedQueue{}
+	return lq
+}
 
 // 循环队列
 type RingQueue struct {
