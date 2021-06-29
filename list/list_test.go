@@ -57,3 +57,58 @@ func TestReverseList(t *testing.T){
 		res = res.Next
 	}
 }
+
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	if headA==nil || headB==nil{
+		return nil
+	}
+	startA,startB := headA,headB
+	for headA!=headB{
+		if headA!=nil{
+			headA = headA.Next
+		}else{
+			headA = startB
+		}
+		if headB!=nil{
+			headB = headB.Next
+		}else{
+			headB = startA
+		}
+	}
+	return headA
+}
+
+func TestGetInsertNode(t *testing.T) {
+	common := &ListNode{
+		Val:  8,
+		Next: &ListNode{
+			Val:  4,
+			Next: &ListNode{
+				Val:  5,
+				Next: nil,
+			},
+		},
+	}
+	h1 := &ListNode{
+		Val:  4,
+		Next: &ListNode{
+			Val:  1,
+			Next: common,
+		},
+	}
+	h2 := &ListNode{
+		Val:  5,
+		Next: &ListNode{
+			Val:  0,
+			Next: &ListNode{
+				Val:  1,
+				Next: common,
+			},
+		},
+	}
+	ret := getIntersectionNode(h1,h2)
+	for ret!=nil{
+		fmt.Println(ret.Val)
+		ret = ret.Next
+	}
+}
