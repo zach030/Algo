@@ -112,3 +112,74 @@ func TestGetInsertNode(t *testing.T) {
 		ret = ret.Next
 	}
 }
+
+//type ListNode struct {
+//	Val int
+//	Next *ListNode
+//}
+
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	head := l1
+	ptr := head
+	cross := false
+	for l1!=nil{
+		if l2==nil{
+			l2 = &ListNode{
+				Val:  0,
+				Next: nil,
+			}
+		}
+		val := l1.Val+l2.Val
+		if cross{
+			val += 1
+			cross = false
+		}
+		if val/10>0{
+			val = val % 10
+			cross = true
+		}
+		ptr.Val = val
+		if ptr.Next==nil && cross{
+			ptr.Next = &ListNode{
+				Val:  1,
+				Next: nil,
+			}
+			break
+		}
+		ptr = ptr.Next
+		l1 = l1.Next
+		l2 = l2.Next
+	}
+	return head
+}
+
+func TestAddTwoNum(t *testing.T) {
+	h1 := &ListNode{
+		Val:  2,
+		Next: &ListNode{
+			Val:  4,
+			Next: &ListNode{
+				Val:  3,
+				Next: &ListNode{
+					Val:  9,
+					Next: nil,
+				},
+			},
+		},
+	}
+	h2 := &ListNode{
+		Val:  5,
+		Next: &ListNode{
+			Val:  6,
+			Next: &ListNode{
+				Val:  7,
+				Next: nil,
+			},
+		},
+	}
+	ret := addTwoNumbers(h1,h2)
+	for ret!=nil{
+		fmt.Println(ret.Val)
+		ret = ret.Next
+	}
+}
