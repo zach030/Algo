@@ -205,13 +205,50 @@ func preorderTraversal(root *TreeNode) []int {
 	stack := make([]*TreeNode,0)
 	for root!=nil || len(stack)!=0{
 		for root!=nil{
-			stack = append(stack, root)
-			ret = append(ret, root.Val)
+			ret = append(ret,root.Val)
+			stack = append(stack,root)
 			root = root.Left
 		}
-		root = stack[len(stack)-1]
+		node := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		root = root.Right
+		root = node.Right
 	}
 	return ret
+}
+
+// 根据前序遍历和中序遍历 构造二叉树
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	if len(preorder)==0{
+		return nil
+	}
+	rootVal := preorder[0]
+	root := &TreeNode{Val: rootVal}
+	index := 0
+	for i, val := range inorder {
+		if val==rootVal{
+			index = i
+			break
+		}
+	}
+	root.Left = buildTree(preorder[1:len(inorder[:index])+1],inorder[:index])
+	root.Right = buildTree(preorder[len(inorder[:index])+1:],inorder[index+1:])
+	return root
+}
+
+func pathSum(root *TreeNode, targetSum int) [][]int {
+	ret := make([][]int,0)
+	if root == nil{
+		return nil
+	}
+	if root.Left==nil && root.Right==nil{
+
+	}
+}
+
+func dfsPathSum(root *TreeNode, sum,target int){
+	if root==nil{
+		return
+	}
+	sum += root.Val
+
 }
