@@ -114,3 +114,36 @@ func Max(a,b int)int{
 	}
 	return b
 }
+
+// 路径总和
+// DFS
+func hasPathSum(root *TreeNode, targetSum int) bool {
+	if root==nil{
+		return false
+	}
+	// 叶子节点
+	if root.Left==nil && root.Right == nil {
+		return root.Val==targetSum
+	}
+	return hasPathSum(root.Left, targetSum-root.Val) || hasPathSum(root.Right, targetSum-root.Val)
+}
+
+
+// 路径和
+func sumNumbers(root *TreeNode) int {
+	if root==nil{
+		return 0
+	}
+	return sumHelp(root, 0)
+}
+
+func sumHelp(root *TreeNode, i int)int{
+	if root==nil{
+        return 0
+    }
+	tmp := i*10 + root.Val
+	if root.Left==nil && root.Right==nil{
+		return tmp
+	}
+	return sumHelp(root.Left, tmp)+sumHelp(root.Right, tmp) 
+}
