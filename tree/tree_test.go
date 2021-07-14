@@ -48,3 +48,86 @@ func Test_levelOrder(t *testing.T) {
 		})
 	}
 }
+
+func TestSumNumbers(t *testing.T){
+	root := &TreeNode{
+		Val: 4,
+		Left: &TreeNode{
+			Val: 9,
+			Left: &TreeNode{
+				Val:   5,
+			},
+			Right: &TreeNode{
+				Val: 1,
+			},
+		},
+		Right: &TreeNode{Val: 0},
+	}
+	ret := sumNumbers(root)
+	fmt.Println(ret)
+}
+
+func TestLowestCommonAncestor(t *testing.T) {
+	p := &TreeNode{
+		Val:   5,
+		Left:  &TreeNode{
+			Val:   6,
+			Left:  nil,
+			Right: nil,
+		},
+		Right: &TreeNode{
+			Val:   2,
+			Left:  &TreeNode{
+				Val:   7,
+				Left:  nil,
+				Right: nil,
+			},
+			Right: &TreeNode{
+				Val:   4,
+				Left:  nil,
+				Right: nil,
+			},
+		},
+	}
+	q := &TreeNode{
+		Val:   0,
+		Left:  nil,
+		Right: nil,
+	}
+	root := &TreeNode{
+		Val:   3,
+		Left:  p,
+		Right: &TreeNode{
+			Val:   1,
+			Left:  q,
+			Right: &TreeNode{
+				Val:   8,
+				Left:  nil,
+				Right: nil,
+			},
+		},
+	}
+	node := lowestCommonAncestor(root,p,q)
+
+	fmt.Printf("%+v",node)
+}
+
+func TestRightSideView(t *testing.T) {
+	tree := &TreeNode{
+		Val: 3,
+		Left: &TreeNode{
+			Val: 9,
+		},
+		Right: &TreeNode{
+			Val: 20,
+			Left: &TreeNode{
+				Val: 15,
+			},
+			Right: &TreeNode{
+				Val: 7,
+			},
+		},
+	}
+	ret := rightSideView(tree)
+	fmt.Printf("%+v",ret)
+}

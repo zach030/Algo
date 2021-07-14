@@ -81,9 +81,23 @@ func reverseSlice(s []int) []int {
 
 // 最近公共祖先
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	//todo
+	if root==nil || root==p || root == q{
+		return root
+	}
+	left := lowestCommonAncestor(root.Left,p,q)
+	right := lowestCommonAncestor(root.Right,p,q)
+	if left == nil  && right == nil {
+		return nil
+	}
+	if left==nil{
+		return right
+	}
+	if right==nil{
+		return left
+	}
 	return root
 }
+
 
 var max = 0
 
@@ -108,12 +122,7 @@ func calcHeight(root *TreeNode)int {
 	return 0
 }
 
-func Max(a,b int)int{
-	if a >b {
-		return a
-	}
-	return b
-}
+
 
 // 路径总和
 // DFS
@@ -146,4 +155,63 @@ func sumHelp(root *TreeNode, i int)int{
 		return tmp
 	}
 	return sumHelp(root.Left, tmp)+sumHelp(root.Right, tmp) 
+}
+
+func rightSideView(root *TreeNode) []int {
+	ret := make([]int,0)
+	if root==nil{
+		return ret
+	}
+	queue := make([]*TreeNode,0)
+	queue = append(queue,root)
+	for len(queue)!=0{
+		size := len(queue)
+		for i := 0; i < size; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			if node.Left!=nil{
+				queue = append(queue,node.Left)
+			}
+			if node.Right!=nil{
+				queue = append(queue,node.Right)
+			}
+			if i==size-1{
+				ret = append(ret,node.Val)
+			}
+		}
+	}
+	return ret
+}
+
+func isBalanced(root *TreeNode) bool {
+	if root==nil{
+		return true
+	}
+	return Abs(height(root.Left),height(root.Right))<=1 && isBalanced(root.Left) && isBalanced(root.Right)
+}
+
+func height(root *TreeNode)int{
+	if root==nil{
+		return 0
+	}
+	return Max(height(root.Left),height(root.Right))+1
+}
+
+func preorderTraversal(root *TreeNode) []int {
+	ret := make([]int,0)
+	if root==nil{
+		return ret
+	}
+	stack := make([]*TreeNode,0)
+	for root!=nil || len(stack)!=0{
+		for root!=nil{
+			stack = append(stack, root)
+			ret = append(ret, root.Val)
+			root = root.Left
+		}
+		root = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		root = root.Right
+	}
+	return ret
 }
