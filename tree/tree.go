@@ -243,6 +243,7 @@ func pathSum(root *TreeNode, targetSum int) [][]int {
 	if root.Left==nil && root.Right==nil{
 
 	}
+	return ret
 }
 
 func dfsPathSum(root *TreeNode, sum,target int){
