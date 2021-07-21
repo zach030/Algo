@@ -2,7 +2,6 @@ package sort
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 )
 
@@ -24,10 +23,6 @@ func TestInsertSort(t *testing.T) {
 }
 
 func TestQuickSort(t *testing.T) {
-	a := "xxx"
-	s := a[1]
-	q :=strings.Contains(string(s),"x")
-	fmt.Println(q)
 	QuickSort(array, 0, len(array)-1)
 	fmt.Println(array)
 }
