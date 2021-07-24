@@ -26,3 +26,20 @@ func isPalindrome(head *ListNode) bool {
 	}
 	return true
 }
+
+// 删除链表的倒数第 n 个结点，并且返回链表的头结点
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	if head==nil || head.Next==nil{
+		return head
+	}
+	slow, fast := head, head
+	for i := 0; i < n+1; i++ {
+		fast = fast.Next
+	}
+	for fast != nil {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	slow.Next = slow.Next.Next
+	return head
+}
