@@ -19,7 +19,7 @@ func NewArrStack(size int) *ArrStack {
 
 func (a *ArrStack) push(s string) bool {
 	if a.len == a.size {
-		log.Println("stack is full")
+		log.Println("out is full")
 		return false
 	}
 	a.stack = append(a.stack, s)
@@ -29,7 +29,7 @@ func (a *ArrStack) push(s string) bool {
 
 func (a *ArrStack) pop() string {
 	if a.len == 0 {
-		log.Println("empty stack")
+		log.Println("empty out")
 		return ""
 	}
 	s := a.stack[a.len-1]
