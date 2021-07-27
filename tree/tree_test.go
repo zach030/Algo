@@ -49,13 +49,13 @@ func Test_levelOrder(t *testing.T) {
 	}
 }
 
-func TestSumNumbers(t *testing.T){
+func TestSumNumbers(t *testing.T) {
 	root := &TreeNode{
 		Val: 4,
 		Left: &TreeNode{
 			Val: 9,
 			Left: &TreeNode{
-				Val:   5,
+				Val: 5,
 			},
 			Right: &TreeNode{
 				Val: 1,
@@ -69,15 +69,15 @@ func TestSumNumbers(t *testing.T){
 
 func TestLowestCommonAncestor(t *testing.T) {
 	p := &TreeNode{
-		Val:   5,
-		Left:  &TreeNode{
+		Val: 5,
+		Left: &TreeNode{
 			Val:   6,
 			Left:  nil,
 			Right: nil,
 		},
 		Right: &TreeNode{
-			Val:   2,
-			Left:  &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
 				Val:   7,
 				Left:  nil,
 				Right: nil,
@@ -95,11 +95,11 @@ func TestLowestCommonAncestor(t *testing.T) {
 		Right: nil,
 	}
 	root := &TreeNode{
-		Val:   3,
-		Left:  p,
+		Val:  3,
+		Left: p,
 		Right: &TreeNode{
-			Val:   1,
-			Left:  q,
+			Val:  1,
+			Left: q,
 			Right: &TreeNode{
 				Val:   8,
 				Left:  nil,
@@ -107,9 +107,9 @@ func TestLowestCommonAncestor(t *testing.T) {
 			},
 		},
 	}
-	node := lowestCommonAncestor(root,p,q)
+	node := lowestCommonAncestor(root, p, q)
 
-	fmt.Printf("%+v",node)
+	fmt.Printf("%+v", node)
 }
 
 func TestRightSideView(t *testing.T) {
@@ -129,5 +129,46 @@ func TestRightSideView(t *testing.T) {
 		},
 	}
 	ret := rightSideView(tree)
-	fmt.Printf("%+v",ret)
+	fmt.Printf("%+v", ret)
+}
+
+func TestFindDuplicateTree(t *testing.T) {
+	tree := &TreeNode{
+		Val: 1,
+		Left: &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
+				Val: 4,
+			},
+		},
+		Right: &TreeNode{
+			Val: 3,
+			Left: &TreeNode{
+				Val: 2,
+				Left: &TreeNode{
+					Val: 4,
+				},
+			},
+			Right: &TreeNode{
+				Val: 4,
+			},
+		},
+	}
+	res := findDuplicateSubtrees(tree)
+	fmt.Println(res)
+}
+
+func TestFindSecondMiniValue(t *testing.T) {
+	tree := &TreeNode{
+		Val: 2,
+		Left: &TreeNode{
+			Val: 2,
+		},
+		Right: &TreeNode{
+			Val:   5,
+			Left:  &TreeNode{Val: 5},
+			Right: &TreeNode{Val: 7},
+		},
+	}
+	fmt.Println(findSecondMinimumValue(tree))
 }
