@@ -383,3 +383,38 @@ func findSecondMinimumValue(root *TreeNode) int {
 	traverse(root)
 	return ans
 }
+
+// 对称二叉树
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	var judge func(left, right *TreeNode) bool
+	judge = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
+			return true
+		}
+		if left == nil || right == nil {
+			return false
+		}
+		if left.Val != right.Val {
+			return false
+		}
+		return judge(left.Left, right.Right) && judge(left.Right, right.Left)
+	}
+	return judge(root.Left, root.Right)
+}
+
+// 最大深度
+func maxDepth(root *TreeNode) int {
+	var depth func(root *TreeNode) int
+	depth = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := depth(root.Left)
+		right := depth(root.Right)
+		return Max(left, right) + 1
+	}
+	return depth(root)
+}
