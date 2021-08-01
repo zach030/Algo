@@ -32,3 +32,25 @@ func longestPalindrome(s string) string {
 	}
 	return s[maxStart+1 : maxStart+maxLen+1]
 }
+
+// 打家劫舍 198
+func rob(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	size := len(nums)
+	dp := make([]int, size+1)
+	dp[0] = 0
+	dp[1] = nums[0]
+	for i := 2; i <= size; i++ {
+		dp[i] = max(dp[i-1], nums[i-1]+dp[i-2])
+	}
+	return dp[size]
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}

@@ -58,3 +58,22 @@ func threeSum(nums []int) [][]int {
 	}
 	return ret
 }
+
+// 每日气温
+func dailyTemperatures(temperatures []int) []int {
+	size := len(temperatures)
+	ret := make([]int, size)
+	ret[size-1] = 0
+	for i := size - 2; i >= 0; i-- {
+		for j := i + 1; j < size; j += ret[j] {
+			if temperatures[i] < temperatures[j] {
+				ret[i] = j - i
+				break
+			} else if ret[j] == 0 {
+				ret[i] = 0
+				break
+			}
+		}
+	}
+	return ret
+}
