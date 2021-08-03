@@ -102,3 +102,66 @@ func reverseList(head *ListNode) *ListNode {
 	}
 	return prev
 }
+
+// 递归法
+func reverseList2(head *ListNode) *ListNode {
+	if head.Next == nil || head == nil {
+		return head
+	}
+	last := reverseList(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return last
+}
+
+var successor *ListNode
+
+// 翻转前N个节点
+func reverseN(head *ListNode, n int) *ListNode {
+	if n == 1 {
+		successor = head.Next
+		return head
+	}
+	last := reverseN(head.Next, n-1)
+	head.Next.Next = head
+	head.Next = successor
+	return last
+}
+
+func reverseBetween2(head *ListNode, left int, right int) *ListNode {
+	if left == 1 {
+		return reverseN(head, right)
+	}
+	head.Next = reverseBetween2(head.Next, left-1, right-1)
+	return head
+}
+
+// k个一组翻转链表
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil {
+		return head
+	}
+	a, b := head, head
+	for i := 0; i < k; i++ {
+		if b == nil {
+			return head
+		}
+		b = b.Next
+	}
+	newHead := reverse(a, b)
+	a.Next = reverseKGroup(b, k)
+	return newHead
+}
+
+// 翻转a-b之间的链表
+func reverse(a, b *ListNode) *ListNode {
+	var prev *ListNode
+	curr, nxt := a, a
+	for curr != b {
+		nxt = curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = nxt
+	}
+	return prev
+}

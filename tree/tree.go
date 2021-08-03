@@ -340,7 +340,6 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
 func findDuplicateSubtrees(root *TreeNode) []*TreeNode {
 	ret := make([]*TreeNode, 0)
 	treeMap := make(map[string]int, 0)
-
 	var traverse func(root *TreeNode) string
 	traverse = func(root *TreeNode) string {
 		if root == nil {
