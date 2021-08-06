@@ -420,23 +420,45 @@ func maxDepth(root *TreeNode) int {
 
 // 合并二叉树
 func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
-	if root1==nil && root2==nil{
+	if root1 == nil && root2 == nil {
 		return nil
 	}
-	if root1==nil{
+	if root1 == nil {
 		return root2
 	}
-	if root2==nil{
+	if root2 == nil {
 		return root1
 	}
-	root1.Val+=root2.Val
-	root1.Left=mergeTrees(root1.Left,root2.Left)
-	root1.Right=mergeTrees(root1.Right,root2.Right)
+	root1.Val += root2.Val
+	root1.Left = mergeTrees(root1.Left, root2.Left)
+	root1.Right = mergeTrees(root1.Right, root2.Right)
 	return root1
 }
 
 // 最小深度
 func minDepth(root *TreeNode) int {
-	//todo
-	return 0
+	if root == nil {
+		return 0
+	}
+	depth := 1
+	nodeList := make([]*TreeNode, 0)
+	nodeList = append(nodeList, root)
+	for len(nodeList) != 0 {
+		size := len(nodeList)
+		for i := 0; i < size; i++ {
+			node := nodeList[0]
+			nodeList = nodeList[1:]
+			if node.Left == nil && node.Right == nil {
+				return depth
+			}
+			if node.Left != nil {
+				nodeList = append(nodeList, node.Left)
+			}
+			if node.Right != nil {
+				nodeList = append(nodeList, node.Right)
+			}
+		}
+		depth++
+	}
+	return depth
 }

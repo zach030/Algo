@@ -172,3 +172,22 @@ func TestFindSecondMiniValue(t *testing.T) {
 	}
 	fmt.Println(findSecondMinimumValue(tree))
 }
+
+func TestTreeDepth(t *testing.T) {
+	tree := &TreeNode{
+		Val:   1,
+		Left:  &TreeNode{
+			Val:   2,
+			Left:  &TreeNode{
+				Val:   4,
+			},
+		},
+		Right: &TreeNode{
+			Val:   3,
+			Right: &TreeNode{
+				Val:   5,
+			},
+		},
+	}
+	fmt.Println(minDepth(tree))
+}

@@ -1,6 +1,9 @@
 package window
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // 无重复字符最长子串
 func lengthOfLongestSubstring(s string) int {
@@ -86,4 +89,49 @@ func Min(a, b int) int {
 		return b
 	}
 	return a
+}
+
+// 最小覆盖子串
+func minWindow(s string, t string) string {
+	need, window := make(map[uint8]int, 0), make(map[uint8]int, 0)
+	for i := 0; i < len(t); i++ {
+		need[t[i]]++
+	}
+	valid := 0
+	left, right := 0, 0
+	start, size := 0, math.MaxInt32
+	for right < len(s) {
+		char := s[right]
+		right++
+		if _, ok := need[char]; ok {
+			window[char]++
+			if window[char] == need[char] {
+				valid++
+			}
+		}
+		for valid == len(need) {
+			if right-left < size {
+				start = left
+				size = right - left
+			}
+			d := s[left]
+			left++
+			if _, ok := need[d]; ok {
+				if window[d] == need[d] {
+					valid--
+				}
+				window[d]--
+			}
+		}
+	}
+	if size == math.MaxInt32 {
+		return ""
+	}
+	return s[start : start+size]
+}
+
+// 是否包含字符串排序
+func checkInclusion(s1 string, s2 string) bool {
+
+	return false
 }
