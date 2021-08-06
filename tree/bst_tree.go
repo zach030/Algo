@@ -90,3 +90,77 @@ func maxPathSum(root *TreeNode) int {
 	dfs(root)
 	return maxSum
 }
+
+// 插入二叉搜索树
+func insertIntoBST(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return &TreeNode{Val: val}
+	}
+	if root.Val > val {
+		root.Left = insertIntoBST(root.Left, val)
+	}
+	if root.Val < val {
+		root.Right = insertIntoBST(root.Right, val)
+	}
+	return root
+}
+
+// 删除二叉搜索树节点
+func deleteNode(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val == val {
+		if root.Left == nil {
+			return root.Right
+		}
+		if root.Right == nil {
+			return root.Left
+		}
+		min := getMin(root.Right)
+		root.Val = min.Val
+		root.Right = deleteNode(root.Right, min.Val)
+	} else if root.Val > val {
+		root.Left = deleteNode(root.Left, val)
+	} else {
+		root.Right = deleteNode(root.Right, val)
+	}
+	return root
+}
+
+func getMin(root *TreeNode) *TreeNode {
+	for root.Left != nil {
+		root = root.Left
+	}
+	return root
+}
+
+// 不同的二叉搜索树
+func generateTrees(n int) []*TreeNode {
+	ret := make([]*TreeNode, 0)
+	if n == 0 {
+		return ret
+	}
+	return build(1, n)
+}
+
+func build(low, high int) []*TreeNode {
+	ret := make([]*TreeNode, 0)
+	if low > high {
+		ret = append(ret, nil)
+		return ret
+	}
+	for i := low; i <= high; i++ {
+		left := build(low, i-1)
+		right := build(i+1, high)
+		for _, lt := range left {
+			for _, rt := range right {
+				root := &TreeNode{Val: i}
+				root.Left = lt
+				root.Right = rt
+				ret = append(ret, root)
+			}
+		}
+	}
+	return ret
+}

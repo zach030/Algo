@@ -434,3 +434,9 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 	root1.Right=mergeTrees(root1.Right,root2.Right)
 	return root1
 }
+
+// 最小深度
+func minDepth(root *TreeNode) int {
+	//todo
+	return 0
+}
