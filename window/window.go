@@ -132,6 +132,69 @@ func minWindow(s string, t string) string {
 
 // 是否包含字符串排序
 func checkInclusion(s1 string, s2 string) bool {
-
+	need,window := make(map[uint8]int,0),make(map[uint8]int,0)
+	for i := 0; i < len(s1); i++ {
+		need[s1[i]]++
+	}
+	left,right := 0,0
+	valid := 0
+	for right<len(s2){
+		char := s2[right]
+		right++
+		if _,ok:=need[char];ok{
+			window[char]++
+			if window[char]==need[char]{
+				valid++
+			}
+		}
+		for right-left>=len(s1){
+			if valid==len(need){
+				return true
+			}
+			ch := s2[left]
+			left++
+			if _,ok:=need[ch];ok{
+				if window[ch]==need[ch]{
+					valid--
+				}
+				window[ch]--
+			}
+		}
+	}
 	return false
+}
+
+
+func findAnagrams(s string, p string) []int {
+	need,window := make(map[uint8]int),make(map[uint8]int)
+	for i := 0; i < len(p); i++ {
+		need[p[i]]++
+	}
+	left,right :=0,0
+	valid :=0
+	ret := make([]int,0)
+	for right<len(s){
+		char := s[right]
+		right++
+		if _,ok:=need[char];ok{
+			window[char]++
+			if window[char]==need[char]{
+				valid++
+			}
+		}
+		for right-left>=len(p){
+			if valid==len(need){
+				ret = append(ret, left)
+			}
+			ch := s[left]
+			left++
+			if _,ok:=need[ch];ok{
+				if window[ch]==need[ch]{
+					valid--
+				}
+				window[ch]--
+			}
+		}
+	}
+	return ret
 }
