@@ -55,7 +55,7 @@ func ShellSort(arr []int) []int {
 	return arr
 }
 
-func QuickSort(arr []int, left, right int){
+func QuickSort(arr []int, left, right int) {
 	if left >= right {
 		return
 	}
@@ -78,4 +78,57 @@ func QuickSort(arr []int, left, right int){
 	arr[i] = tmp
 	QuickSort(arr, left, i-1)
 	QuickSort(arr, i+1, right)
+}
+
+func quickSort(arr []int, left, right int) {
+	if left >= right {
+		return
+	}
+	i, j := left, right
+	rand.Seed(time.Now().Unix())
+	r := rand.Intn(right-left) + left
+	arr[i], arr[r] = arr[r], arr[i]
+	tmp := arr[i]
+	for i < j {
+		for i < j && arr[j] >= tmp {
+			j--
+		}
+		arr[i] = arr[j]
+		for i < j && arr[i] <= tmp {
+			i++
+		}
+		arr[j] = arr[i]
+	}
+	arr[i] = tmp
+	quickSort(arr, left, i-1)
+	quickSort(arr, i+1, right)
+}
+
+func sortArray(nums []int) []int {
+	//var quickSort func(arr []int,left,right int)
+	quickSort := func(arr []int, left, right int) {
+		if left >= right {
+			return
+		}
+		rand.Seed(time.Now().Unix())
+		r := rand.Intn(right-left) + left
+		i, j := left, right
+		arr[i], arr[r] = arr[r], arr[i]
+		tmp := arr[i]
+		for i < j {
+			for i < j && arr[j] >= tmp {
+				j--
+			}
+			arr[i] = arr[j]
+			for i < j && arr[i] <= tmp {
+				i++
+			}
+			arr[j] = arr[i]
+		}
+		arr[i] = tmp
+		quickSort(arr, left, i-1)
+		quickSort(arr, i+1, right)
+	}
+	quickSort(nums, 0, len(nums)-1)
+	return nums
 }

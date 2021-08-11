@@ -23,6 +23,9 @@ func TestInsertSort(t *testing.T) {
 }
 
 func TestQuickSort(t *testing.T) {
-	QuickSort(array, 0, len(array)-1)
+	//QuickSort(array, 0, len(array)-1)
+
+	//quickSort(array, 0, len(array)-1)
+	sortArray(array)
 	fmt.Println(array)
 }
