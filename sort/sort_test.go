@@ -29,3 +29,54 @@ func TestQuickSort(t *testing.T) {
 	sortArray(array)
 	fmt.Println(array)
 }
+
+type Tree struct {
+	Val   int
+	Left  *Tree
+	Right *Tree
+}
+
+func TestDepthOfTree(t *testing.T) {
+	tree := &Tree{
+		Val: 2,
+		Left: &Tree{
+			Val: 1,
+			Left: &Tree{
+				Val: 3,
+			},
+			Right: nil,
+		},
+		Right: &Tree{
+			Val: 4,
+		},
+	}
+	getDepth(tree)
+	//fmt.Println(ret)
+}
+
+func getDepth(root *Tree) {
+	res := make([][]int, 0)
+	tmp := make([]int, 0)
+	var dfs func(root *Tree, arr []int)
+	dfs = func(root *Tree, arr []int) {
+		if root == nil {
+			res = append(res, arr)
+			return
+		}
+		arr = append(arr, root.Val)
+		dfs(root.Left, arr)
+		dfs(root.Right, arr)
+		if len(tmp) != 0 {
+			tmp = tmp[:len(tmp)-1]
+		}
+	}
+	dfs(root, tmp)
+	fmt.Println(res)
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}

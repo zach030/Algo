@@ -462,3 +462,42 @@ func minDepth(root *TreeNode) int {
 	}
 	return depth
 }
+
+// 二叉树镜像
+func mirrorTree(root *TreeNode) *TreeNode {
+	var dfs func(root *TreeNode)
+	dfs = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		left := root.Left
+		right := root.Right
+		root.Left = right
+		root.Right = left
+		dfs(root.Left)
+		dfs(root.Right)
+	}
+	dfs(root)
+	return root
+}
+
+// 判断对称二叉树
+func isSymmetric2(root *TreeNode) bool {
+	if root==nil{
+		return true
+	}
+	var judge func(left, right *TreeNode) bool
+	judge = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
+			return true
+		}
+		if left == nil || right == nil {
+			return false
+		}
+		if left.Val!=right.Val{
+			return false
+		}
+		return judge(left.Left,right.Right)&&judge(left.Right,right.Left)
+	}
+	return judge(root.Left, root.Right)
+}

@@ -164,3 +164,94 @@ func build(low, high int) []*TreeNode {
 	}
 	return ret
 }
+
+// 最大键值和
+func maxSumBST(root *TreeNode) int {
+	maxSum := 0
+	var traverse func(root *TreeNode)
+	traverse = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		var (
+			left  int
+			right int
+			sum   int
+		)
+		// 判断左右子树是否是二叉搜索树
+		if !isValidBST2(*root.Left) || !isValidBST2(*root.Right) {
+			goto next
+		}
+		// 判断加上自身 是否是二叉搜索树
+		if root.Val > findMax(*root.Left) || root.Val < findMin(*root.Right) {
+			goto next
+		}
+		left = findSum(*root.Left)
+		right = findSum(*root.Right)
+		sum = left + right + root.Val
+		if sum > maxSum {
+			maxSum = sum
+		}
+		//前序遍历
+	next:
+		traverse(root.Left)
+		traverse(root.Right)
+	}
+	traverse(root)
+	return maxSum
+}
+
+// 二叉搜索树最大值
+func findMax(root TreeNode) int {
+	tree := &root
+	for tree.Right != nil {
+		tree = tree.Right
+	}
+	return tree.Val
+}
+
+func findMin(root TreeNode) int {
+	tree := &root
+	for tree.Left != nil {
+		tree = tree.Left
+	}
+	return tree.Val
+}
+
+func findSum(root TreeNode) int {
+	tree := &root
+	sum := 0
+	var traverse func(root *TreeNode)
+	traverse = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		sum += root.Val
+		traverse(root.Left)
+		traverse(root.Right)
+	}
+	traverse(tree)
+	return sum
+}
+
+// 判断有效二叉树
+func isValidBST2(root TreeNode) bool {
+	val := root
+	tree := &val
+	stack := make([]*TreeNode, 0)
+	inorder := math.MinInt64
+	for len(stack) > 0 || tree != nil {
+		for tree != nil {
+			stack = append(stack, tree)
+			tree = tree.Left
+		}
+		tree = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if tree.Val <= inorder {
+			return false
+		}
+		inorder = tree.Val
+		tree = tree.Right
+	}
+	return true
+}
