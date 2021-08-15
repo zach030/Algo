@@ -483,7 +483,7 @@ func mirrorTree(root *TreeNode) *TreeNode {
 
 // 判断对称二叉树
 func isSymmetric2(root *TreeNode) bool {
-	if root==nil{
+	if root == nil {
 		return true
 	}
 	var judge func(left, right *TreeNode) bool
@@ -494,10 +494,104 @@ func isSymmetric2(root *TreeNode) bool {
 		if left == nil || right == nil {
 			return false
 		}
-		if left.Val!=right.Val{
+		if left.Val != right.Val {
 			return false
 		}
-		return judge(left.Left,right.Right)&&judge(left.Right,right.Left)
+		return judge(left.Left, right.Right) && judge(left.Right, right.Left)
 	}
 	return judge(root.Left, root.Right)
+}
+
+// 判断树B是A的子结构
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+	if A == nil || B == nil {
+		return false
+	}
+	var dfs func(a, b *TreeNode) bool
+	dfs = func(a, b *TreeNode) bool {
+		if b == nil {
+			return true
+		} else if a == nil {
+			return false
+		}
+		if a.Val != b.Val {
+			return false
+		}
+		return dfs(a.Left, b.Left) && dfs(a.Right, b.Right)
+	}
+	return dfs(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
+}
+
+// 从上到下打印二叉树
+func levelOrder2(root *TreeNode) [][]int {
+	ret := make([][]int, 0)
+	nodes := make([]*TreeNode, 0)
+	if root == nil {
+		return ret
+	}
+	nodes = append(nodes, root)
+	for len(nodes) != 0 {
+		size := len(nodes)
+		row := make([]int, 0)
+		for i := 0; i < size; i++ {
+			node := nodes[0]
+			nodes = nodes[1:]
+			row = append(row, node.Val)
+			if node.Left != nil {
+				nodes = append(nodes, node.Left)
+			}
+			if node.Right != nil {
+				nodes = append(nodes, node.Right)
+			}
+		}
+		ret = append(ret, row)
+	}
+	return ret
+}
+
+// 二叉树深度
+func maxDepth2(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var dfs func(root *TreeNode) int
+	dfs = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := dfs(root.Left)
+		right := dfs(root.Right)
+		if left > right {
+			return left + 1
+		}
+		return right + 1
+	}
+	return dfs(root)
+}
+
+// 二叉搜索树第k大
+func kthLargest(root *TreeNode, k int) int {
+	if root == nil {
+		return 0
+	}
+	ret := make([]int, 0)
+	var dfs func(root *TreeNode)
+	dfs = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		dfs(root.Left)
+		ret = append(ret, root.Val)
+		dfs(root.Right)
+		return
+	}
+	dfs(root)
+	fmt.Println(ret)
+	return ret[len(ret)-k]
+}
+
+// 判断平衡二叉树
+func isBalanced2(root *TreeNode) bool {
+
+	return true
 }

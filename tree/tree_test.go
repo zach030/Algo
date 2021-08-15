@@ -189,5 +189,6 @@ func TestTreeDepth(t *testing.T) {
 			},
 		},
 	}
-	fmt.Println(minDepth(tree))
+	fmt.Println(levelOrder2(tree))
+	fmt.Println(kthLargest(tree,1))
 }

@@ -54,3 +54,24 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// 斐波拉契数列
+func fib(n int) int64 {
+	if n < 1 {
+		return 0
+	}
+	var memo = make(map[int]int64)
+	res := helper(memo, n)
+	return res
+}
+
+func helper(arr map[int]int64, n int) int64 {
+	if n == 1 || n == 2 {
+		return 1
+	}
+	if arr[n] != 0 {
+		return arr[n]
+	}
+	arr[n] = helper(arr, n-1)%1000000007 + helper(arr, n-2)%1000000007
+	return arr[n]
+}
