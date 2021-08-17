@@ -175,20 +175,27 @@ func TestFindSecondMiniValue(t *testing.T) {
 
 func TestTreeDepth(t *testing.T) {
 	tree := &TreeNode{
-		Val:   1,
-		Left:  &TreeNode{
-			Val:   2,
-			Left:  &TreeNode{
-				Val:   4,
+		Val: 1,
+		Left: &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
+				Val: 4,
 			},
 		},
 		Right: &TreeNode{
-			Val:   3,
+			Val: 3,
 			Right: &TreeNode{
-				Val:   5,
+				Val: 5,
+			},
+			Left: &TreeNode{
+				Val: 3,
 			},
 		},
 	}
 	fmt.Println(levelOrder2(tree))
-	fmt.Println(kthLargest(tree,1))
+	fmt.Println(kthLargest(tree, 1))
+	fmt.Println(pathSum2(tree, 7))
+
+	p := []int{1, 3, 2, 6, 5}
+	verifyPostorder(p)
 }

@@ -592,6 +592,73 @@ func kthLargest(root *TreeNode, k int) int {
 
 // 判断平衡二叉树
 func isBalanced2(root *TreeNode) bool {
-
-	return true
+	if root == nil {
+		return true
+	}
+	var height func(root *TreeNode) int
+	height = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := height(root.Left)
+		right := height(root.Right)
+		if left > right {
+			return left + 1
+		}
+		return right + 1
+	}
+	flag := false
+	if height(root.Left)-height(root.Right) <= 1 || height(root.Right)-height(root.Left) <= 1 {
+		flag = true
+	}
+	return flag && isBalanced2(root.Left) && isBalanced2(root.Right)
 }
+
+// 找出路径和为target的路径
+func pathSum2(root *TreeNode, target int) [][]int {
+	ret := make([][]int, 0)
+	var path []int
+	var dfs func(root *TreeNode, sum int)
+	dfs = func(root *TreeNode, sum int) {
+		if root == nil {
+			return
+		}
+		sum -= root.Val
+		path = append(path, root.Val)
+		defer func() { path = path[:len(path)-1] }()
+		if root.Left == nil && root.Right == nil && sum == 0 {
+			ret = append(ret, append([]int(nil), path...))
+			return
+		}
+		dfs(root.Left, sum)
+		dfs(root.Right, sum)
+	}
+	dfs(root, target)
+	return ret
+}
+
+// 判断是二叉搜索树的后序遍历结果
+func verifyPostorder(postorder []int) bool {
+	if len(postorder) == 0 {
+		return true
+	}
+	root := postorder[len(postorder)-1]
+	postorder = postorder[:len(postorder)-1]
+	left := postorder[len(postorder)-2]
+	right := postorder[len(postorder)-1]
+	if left > root || root > right {
+		return false
+	}
+	return verifyPostorder(postorder)
+}
+
+//func recur(post []int, i, j int) bool {
+//	if i > j {
+//		return true
+//	}
+//	p:=i
+//	for post[p]<post[j]{
+//		p++
+//	}
+//
+//}

@@ -75,3 +75,32 @@ func helper(arr map[int]int64, n int) int64 {
 	arr[n] = helper(arr, n-1)%1000000007 + helper(arr, n-2)%1000000007
 	return arr[n]
 }
+
+// 编辑距离
+func minDistance(word1 string, word2 string) int {
+	var dp func(i, j int) int
+	dp = func(i, j int) int {
+		if i == -1 {
+			return j + 1
+		}
+		if j == -1 {
+			return i + 1
+		}
+		if word1[i] == word2[j] {
+			return dp(i-1, j-1)
+		}
+		return min(dp(i-1, j)+1, dp(i, j-1)+1, dp(i-1, j-1)+1)
+	}
+	return dp(len(word1)-1, len(word2)-1)
+}
+
+func min(a, b, c int) int {
+	m := a
+	if b<=m{
+		m=b
+	}
+	if c<=m{
+		m=c
+	}
+	return m
+}

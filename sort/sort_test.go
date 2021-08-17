@@ -55,22 +55,24 @@ func TestDepthOfTree(t *testing.T) {
 }
 
 func getDepth(root *Tree) {
-	res := make([][]int, 0)
-	tmp := make([]int, 0)
-	var dfs func(root *Tree, arr []int)
-	dfs = func(root *Tree, arr []int) {
+	res := make([]int, 0)
+	maxDep := 0
+	var dfs func(root *Tree) int
+	dfs = func(root *Tree) int {
 		if root == nil {
-			res = append(res, arr)
-			return
+			return 0
 		}
-		arr = append(arr, root.Val)
-		dfs(root.Left, arr)
-		dfs(root.Right, arr)
-		if len(tmp) != 0 {
-			tmp = tmp[:len(tmp)-1]
+		res = append(res, root.Val)
+		defer func() { res = res[:len(res)-1] }()
+		left := dfs(root.Left)
+		right := dfs(root.Right)
+		if Max(left, right)+1 > maxDep {
+			maxDep = Max(left, right) + 1
+			return maxDep
 		}
+		return maxDep
 	}
-	dfs(root, tmp)
+	dfs(root)
 	fmt.Println(res)
 }
 
