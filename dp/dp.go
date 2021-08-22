@@ -1,5 +1,7 @@
 package dp
 
+import "math"
+
 // 最长回文子串
 func longestPalindrome(s string) string {
 	if len(s) == 0 {
@@ -96,11 +98,58 @@ func minDistance(word1 string, word2 string) int {
 
 func min(a, b, c int) int {
 	m := a
-	if b<=m{
-		m=b
+	if b <= m {
+		m = b
 	}
-	if c<=m{
-		m=c
+	if c <= m {
+		m = c
 	}
 	return m
+}
+
+func fib2(n int) int {
+	if n == 1 || n == 2 {
+		return 1
+	}
+	prev, curr := 1, 1
+	for i := 3; i < n; i++ {
+		sum := prev + curr
+		prev = curr
+		curr = sum
+	}
+	return curr
+}
+
+// 零钱兑换
+func coinChange(coins []int, amount int) int {
+	memo := make(map[int]int, 0)
+	var dp func(n int) int
+	dp = func(n int) int {
+		if n == 0 {
+			return 0
+		}
+		if n < 0 {
+			return -1
+		}
+		if ans, ok := memo[n]; ok {
+			return ans
+		}
+		res := math.MaxInt16
+		for _, coin := range coins {
+			sub := dp(n - coin)
+			if sub == -1 {
+				continue
+			}
+			if sub+1 < res {
+				res = sub + 1
+			}
+		}
+		if res != math.MaxInt16 {
+			memo[n]=res
+		}else{
+			memo[n]=-1
+		}
+		return memo[n]
+	}
+	return dp(amount)
 }

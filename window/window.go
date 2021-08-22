@@ -206,16 +206,13 @@ func lengthOfLongestSubstring2(s string) int {
 	for right < len(s) {
 		ch := s[right]
 		right++
-		if _, ok := window[ch]; ok {
-			// 字符已存在
-			if right-left-1 > maxSize {
-				maxSize = right - left - 1
-			}
-			left = right
-			window = make(map[uint8]int)
-		} else {
-			window[ch]++
+		window[ch]++
+		for window[ch] > 1 {
+			d := s[left]
+			left++
+			window[d]--
 		}
+		maxSize = Max(maxSize,right-left)
 	}
 	return maxSize
 }

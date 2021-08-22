@@ -104,3 +104,258 @@ func TestFindSubStr(t *testing.T) {
 	fmt.Println(lengthOfLongestSubstring2("bbbb"))
 	fmt.Println(lengthOfLongestSubstring2("pwwkew"))
 }
+
+func TestSolution1(t *testing.T) {
+	fmt.Println(string(findKthBit(4, 11)))
+}
+
+func calc(arr []int64, target int64) int {
+	total := 0
+	for i := 0; i < len(arr); i++ {
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i]+arr[j] < target {
+				total++
+			}
+		}
+	}
+	return total
+}
+
+var (
+	s1     = "a"
+	s2     = "abz"
+	s3     = "abzcayz"
+	s4     = "abzcayzdabzxayz"
+	str    = []string{s1, s2, s3, s4}
+	letter = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+)
+
+//
+func findKthBit(n int, k int) byte {
+	str := GetSn(n)
+	return str[k-1]
+}
+
+func GetSn(n int) string {
+	if n == 1 {
+		return s1
+	}
+	if n == 2 {
+		return s2
+	}
+	prev := GetSn(n - 1)
+	alpha := letter[n-1]
+	afterInvert := make([]byte, 0, len(prev))
+	for i := 0; i < len(prev); i++ {
+		idx := 25 - (prev[i] - 97)
+		afterInvert = append(afterInvert, letter[idx]...)
+	}
+	afterReverse := make([]byte, 0, len(afterInvert))
+	for i := len(afterInvert) - 1; i >= 0; i-- {
+		afterReverse = append(afterReverse, afterInvert[i])
+	}
+	sum := prev + alpha + string(afterReverse)
+	fmt.Println("s", n, "is:", sum)
+	return sum
+}
+
+func TestSolution2(t *testing.T) {
+	arr := []int{4, 4, 5}
+	arr2 := []int{1, 1, 1}
+	arr3 := []int{1, 2, 3}
+	arr4 := []int{5}
+
+	fmt.Println(GreddyDispatch(arr))
+	fmt.Println(GreddyDispatch(arr2))
+	fmt.Println(GreddyDispatch(arr3))
+	fmt.Println(GreddyDispatch(arr4))
+}
+
+func GreddyDispatch(age []int) int {
+	dis := make([]int, len(age))
+	for i := 0; i < len(age); i++ {
+		dis[i] = 1
+	}
+	for i := 1; i < len(age); i++ {
+		if age[i] > age[i-1] {
+			dis[i] = dis[i-1] + 1
+		}
+	}
+	for i := len(age) - 1; i > 0; i-- {
+		if age[i] < age[i-1] {
+			dis[i-1] = max(dis[i-1], dis[i]+1)
+		}
+	}
+	sum := 0
+	for _, di := range dis {
+		sum += di
+	}
+	return sum
+}
+
+func TestSolution3(t *testing.T) {
+	fmt.Println(minSailCost([][]int{{1, 1, 1, 1, 0}, {0, 1, 0, 1, 0}, {1, 1, 2, 1, 1}, {0, 2, 0, 0, 1}}))
+}
+
+func minSailCost(input [][]int) int {
+	var dfs func(x, y int) int
+	dfs = func(x, y int) int {
+		down := dfs(x+1, y)
+		right := dfs(x, y+1)
+		if x >= len(input) || y >= len(input[x]) || input[x][y] == 2 {
+			return -1
+		}
+		if input[x][y] == 1 {
+			return 1
+		}
+		if input[x][y] == 0 {
+			return 2
+		}
+		if down < right {
+			return down
+		}
+		return right
+	}
+	return dfs(0, 0)
+}
+
+var input = []int{1, 1, 2}
+var limit = make(map[string]bool, 0)
+
+func TestMeituanSolution1(t *testing.T) {
+
+	arr := []int{1, 2, 3}
+	fullSort(arr)
+}
+
+func search(arr []int) int {
+	size := len(arr)
+	front := size - 2
+	for front >= 0 && arr[front] > arr[front+1] {
+		front--
+	}
+	return front
+}
+
+func searchBigger(arr []int, targetIndex int) int {
+	size := len(arr)
+	index := size - 1
+	for index >= 0 && arr[index] < arr[targetIndex] {
+		index--
+	}
+	return index
+}
+
+func swap(arr []int, id1, id2 int) {
+	arr[id1], arr[id2] = arr[id2], arr[id1]
+}
+
+func reverse(arr []int, start, end int) {
+	for start < end {
+		arr[start], arr[end] = arr[end], arr[start]
+		start++
+		end--
+	}
+}
+
+func printArray(arr []int) {
+	str := ""
+	for i := 0; i < len(arr); i++ {
+		if str == "" {
+			str = fmt.Sprintf("%s%v", str, input[arr[i]-1])
+		} else {
+			str = fmt.Sprintf("%s %v", str, input[arr[i]-1])
+		}
+	}
+	if _, ok := limit[str]; ok {
+		return
+	}
+	limit[str] = true
+	fmt.Println(str)
+}
+
+func fullSort(arr []int) {
+	if arr == nil || len(arr) == 0 {
+		return
+	}
+	printArray(arr)
+	front := search(arr)
+	for front != -1 {
+		back := searchBigger(arr, front)
+		swap(arr, front, back)
+		reverse(arr, front+1, len(arr)-1)
+		printArray(arr)
+		front = search(arr)
+	}
+}
+
+
+
+//1 a
+//1 b
+//2 6
+//2 4
+
+func TestMTSolution2(t *testing.T) {
+	type op struct {
+		typ int
+		arg interface{}
+	}
+	str := "asdgfas"
+	opArr := []op{
+		{
+			typ: 2,
+			arg: 6,
+		},
+		{
+			typ: 1,
+			arg: "a",
+		},
+		{
+			typ: 1,
+			arg: "b",
+		},
+		{
+			typ: 2,
+			arg: 6,
+		},
+		{
+			typ: 2,
+			arg: 4,
+		},
+	}
+	for _, op := range opArr {
+		switch op.typ {
+		case 1:
+			str = fmt.Sprintf("%s%v", str, op.arg.(string))
+		case 2:
+			fmt.Println(query(str, op.arg.(int)-1))
+		}
+	}
+}
+
+func query(str string, pos int) int {
+	size := len(str)
+	step := size
+	found := false
+	for i := pos + 1; i < size; i++ {
+		if str[i] == str[pos] {
+			found = true
+			if i-pos < step {
+				step = i - pos
+			}
+		}
+	}
+	for i := pos - 1; i >= 0; i-- {
+		if str[i] == str[pos] {
+			found = true
+			if pos-i < step {
+				step = pos - i
+			}
+		}
+	}
+	if found {
+		return step
+	}
+	return -1
+}
