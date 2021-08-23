@@ -117,3 +117,36 @@ func partition(nums []int, left, right int) int {
 	nums[i+1], nums[right] = nums[right], nums[i+1]
 	return i + 1
 }
+
+// 下一个排列
+func nextPermutation(nums []int)  {
+	front := search(nums)
+	if front>=0{
+		back := searchBigger(nums,front)
+		nums[front],nums[back]=nums[back],nums[front]
+	}
+	left,right := front+1,len(nums)-1
+	for left<right{
+		nums[left],nums[right]=nums[right],nums[left]
+		left++
+		right--
+	}
+}
+
+func search(arr []int)int{
+	size := len(arr)
+	front := size-2
+	for front>=0&& arr[front]>=arr[front+1]{
+		front--
+	}
+	return front
+}
+
+func searchBigger(arr []int,target int)int{
+	size := len(arr)
+	front := size-1
+	for front>0&&arr[front]<=arr[target]{
+		front--
+	}
+	return front
+}

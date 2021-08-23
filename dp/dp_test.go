@@ -76,3 +76,13 @@ func reverseN(node *ListNode, l, r int) *ListNode {
 	}
 	return reverse(left, right)
 }
+
+func TestLongestLIS(t *testing.T) {
+	a:=lengthOfLIS([]int{10, 9, 2, 5, 3, 7, 101, 18})
+	fmt.Println(a)
+}
+
+func TestMinStep(t *testing.T) {
+	s := minSteps(3)
+	fmt.Println(s)
+}

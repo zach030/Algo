@@ -145,11 +145,78 @@ func coinChange(coins []int, amount int) int {
 			}
 		}
 		if res != math.MaxInt16 {
-			memo[n]=res
-		}else{
-			memo[n]=-1
+			memo[n] = res
+		} else {
+			memo[n] = -1
 		}
 		return memo[n]
 	}
 	return dp(amount)
+}
+
+// 最长递增子序列
+func lengthOfLIS(nums []int) int {
+	dp := make([]int, len(nums))
+	for i := 0; i < len(dp); i++ {
+		dp[i] = 1
+	}
+	for i := 0; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			if nums[j] < nums[i] {
+				dp[i] = max(dp[i], dp[j]+1)
+			}
+		}
+	}
+	m := dp[0]
+	for i := 1; i < len(dp); i++ {
+		if dp[i] > m {
+			m = dp[i]
+		}
+	}
+	return m
+}
+
+// 四键键盘
+func maxA(n int) int {
+	var dp func(n, num, copy int) int
+	dp = func(n, num, copy int) int {
+		if n <= 0 {
+			return num
+		}
+		return max3(dp(n-1, num+1, num), dp(n-1, num+copy, copy), dp(n-2, num, num))
+	}
+	return dp(n, 0, 0)
+}
+
+func max3(a, b, c int) int {
+	if a > b {
+		if a > c {
+			return a
+		}
+		return c
+	}
+	if b > c {
+		return b
+	}
+	return c
+}
+
+// 650 ca+cc cv
+func minSteps(n int) int {
+	//var dp func(num) int
+	//dp = func(num) int {
+	//	if num == n {
+	//		return op
+	//	}
+	//	return min2(dp(num), dp(num))
+	//}
+	//return dp(1)
+	return 0
+}
+
+func min2(a, b int) int {
+	if a <= b {
+		return a
+	}
+	return b
 }

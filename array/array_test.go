@@ -17,3 +17,9 @@ func TestDailyTemperature(t *testing.T) {
 	tem := []int{73, 74, 75, 71, 69, 72, 76, 73}
 	fmt.Println(dailyTemperatures(tem))
 }
+
+func TestNextArr(t *testing.T) {
+	arr := []int{1,5,1}
+	nextPermutation(arr)
+	fmt.Println(arr)
+}
