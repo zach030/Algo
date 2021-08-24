@@ -1,6 +1,9 @@
 package dp
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // 最长回文子串
 func longestPalindrome(s string) string {
@@ -219,4 +222,85 @@ func min2(a, b int) int {
 		return a
 	}
 	return b
+}
+
+// 70
+func climbStairs(n int) int {
+	dp := make([]int, n+1)
+	if n == 1 {
+		return 1
+	}
+	if n == 2 {
+		return 2
+	}
+	dp[1], dp[2] = 1, 2
+	for i := 3; i <= n; i++ {
+		dp[i] = dp[i-1] + dp[i-2]
+	}
+	return dp[n]
+}
+
+// 740
+func minCostClimbingStairs(cost []int) int {
+	dp := make([]int, len(cost))
+	dp[0], dp[1] = cost[0], cost[1]
+	for i := 2; i < len(cost); i++ {
+		dp[i] = min2(dp[i-1], dp[i-2]) + cost[i]
+	}
+	fmt.Println(dp)
+	return min2(dp[len(cost)-1], dp[len(cost)-2])
+}
+
+// 62
+func uniquePaths(m int, n int) int {
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+	for i := 0; i < m; i++ {
+		dp[i][0] = 1
+	}
+	for i := 0; i < n; i++ {
+		dp[0][i] = 1
+	}
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			dp[i][j] = dp[i][j-1] + dp[i-1][j]
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+// 63 障碍物为1 空为0
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+	m, n := len(obstacleGrid), len(obstacleGrid[0])
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+	for i := 0; i < m && obstacleGrid[i][0] == 0; i++ {
+		dp[i][0] = 1
+	}
+	for i := 0; i < n && obstacleGrid[0][i] == 0; i++ {
+		dp[0][i] = 1
+	}
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if obstacleGrid[i][j] == 0 {
+				dp[i][j] = dp[i-1][j] + dp[i][j-1]
+			}
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+// 343 整数拆分
+func integerBreak(n int) int {
+	dp := make([]int, n+1)
+	for i := 2; i <= n; i++ {
+		for j := 1; j < i; j++ {
+			dp[i] = max(dp[i], max(j*(i-j), j*dp[i-j]))
+		}
+	}
+	return dp[n]
 }

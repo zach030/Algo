@@ -86,3 +86,11 @@ func TestMinStep(t *testing.T) {
 	s := minSteps(3)
 	fmt.Println(s)
 }
+
+func TestMinCost(t *testing.T) {
+	a:=minCostClimbingStairs([]int{1, 100, 1, 1, 1, 100, 1, 1, 100, 1})
+	fmt.Println(a)
+
+	b:=uniquePaths(3,3)
+	fmt.Println(b)
+}
