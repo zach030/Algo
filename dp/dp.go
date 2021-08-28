@@ -304,3 +304,80 @@ func integerBreak(n int) int {
 	}
 	return dp[n]
 }
+
+// 704
+func deleteAndEarn(nums []int) int {
+	maxVal := 0
+	for _, val := range nums {
+		maxVal = max(maxVal, val)
+	}
+	sum := make([]int, maxVal+1)
+	for _, val := range nums {
+		sum[val] += val
+	}
+	return rob(sum)
+}
+
+// 55 跳跃游戏
+func canJump(nums []int) bool {
+	size := len(nums)
+	end := size - 1
+	for i := size - 2; i >= 0; i-- {
+		if end-i <= nums[i] {
+			end = i
+		}
+	}
+	return end == 0
+}
+
+// 最少次数跳到终点
+func jump(nums []int) int {
+	//dp[i]:跳跃到i用的最少次数
+	if len(nums) == 1 {
+		return 0
+	}
+	dp := make([]int, len(nums))
+	dp[0] = 0
+	for i := 0; i < len(nums); i++ {
+		for j := i; j < len(nums) && j <= i+nums[i]; j++ {
+			dp[j] = min2(dp[i]+1, dp[j])
+		}
+	}
+	return dp[len(dp)-1]
+}
+
+// 分割等和子集
+func canPartition(nums []int) bool {
+	var sum int
+	size := len(nums)
+	for _, i2 := range nums {
+		sum+=i2
+	}
+	if sum%2!=0{
+		return false
+	}
+	sum = sum / 2
+	// dp[i][j] 选择前i个数字，容量为j的包，可以满足
+	dp:=make([][]bool,size+1)
+	for i := 0; i <= size; i++ {
+		dp[i] = make([]bool, size+1)
+	}
+	for i := 0; i <= size; i++ {
+		dp[i][0]=true
+	}
+	for i := 1; i <= size; i++ {
+		for j := 1; j <= sum; j++ {
+			if j-nums[i-1]<0{
+				dp[i][j]=dp[i-1][j]
+			}else{
+				dp[i][j]=dp[i-1][j] || dp[i-1][j-nums[i-1]]
+			}
+		}
+	}
+	return dp[size][sum]
+}
+
+// 最大子序和
+func maxSubArray(nums []int) int {
+	return 0
+}

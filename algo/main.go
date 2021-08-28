@@ -2,37 +2,91 @@ package main
 
 import (
 	"fmt"
+	"testing"
 )
 
+type taskGroup struct {
+	num     int
+	noDep   map[int]*task
+	allTask map[int]*task
+}
+
+type task struct {
+	id       int
+	day      int
+	dNum     int
+	depends  map[int]*task
+	children map[int]*task
+}
+
 func main() {
-	var cardNum int64
-	fmt.Scan(&cardNum)
-	allCards := make([][]int64, 0)
-	for i := 0; i < 3; i++ {
-		one := make([]int64, 0)
-		j := int64(0)
-		for j = 0; j < cardNum; j++ {
-			var num int64
-			fmt.Scan(&num)
-			one = append(one, num)
+	var group int
+	fmt.Scan(&group)
+	groups := make([]taskGroup, 0, group)
+	for i := 0; i < group; i++ {
+		var num int
+		fmt.Scan(&num)
+		tasks := make(map[int]*task, num)
+		noDep := make(map[int]*task, 0)
+		for j := 1; j <= num; j++ {
+			t := &task{id: j}
+			tasks[t.id] = t
+			fmt.Scan(&t.day, &t.dNum)
+			t.depends = make(map[int]*task)
+			t.children = make(map[int]*task)
+			if t.dNum == 0 {
+				noDep[t.id] = t
+			} else {
+				for k := 0; k < t.dNum; k++ {
+					var dID int
+					fmt.Scan(&dID)
+					t.depends[dID] = tasks[dID]
+					tasks[dID].children[t.id] = t
+				}
+			}
 		}
-		allCards = append(allCards, one)
+		groups = append(groups, taskGroup{
+			num:     num,
+			allTask: tasks,
+			noDep:   noDep,
+		})
 	}
-	arr1 := SelectSort(allCards[0])
-	arr2 := SelectSort(allCards[1])
-	arr3 := SelectSort(allCards[2])
-	var i int64
-	var a int64
-	var b int64
-	var c int64
-	var sum int64
-	for i = 0; i < cardNum; i++ {
-		arr1,a = getMin(arr1)
-		arr2,b = getMin(arr2)
-		arr3,c = getMin(arr3)
-		sum += getMinest(a, b, c)
+
+	startPlan(groups)
+}
+
+func startPlan(groups []taskGroup) {
+	for i := 0; i < len(groups); i++ {
+		g := groups[i]
+		startEachPlan(g)
 	}
-	fmt.Println(sum)
+}
+
+func startEachPlan(g taskGroup) {
+	days := 0
+	for id, noDepTask := range g.noDep {
+		if noDepTask.day > days {
+			days = noDepTask.day
+		}
+		for _, child := range noDepTask.children {
+			delete(child.depends, id)
+		}
+		delete(g.allTask, id)
+	}
+	for len(g.allTask) != 0 {
+		for id, task := range g.allTask {
+			if len(task.depends) == 0 {
+				if task.day > days {
+					days += task.day
+				}
+				for _, child := range task.children {
+					delete(child.depends, id)
+				}
+			}
+			delete(g.allTask, id)
+		}
+	}
+	fmt.Println(days)
 }
 
 func getMinest(a, b, c int64) int64 {
@@ -52,10 +106,10 @@ func getMinest(a, b, c int64) int64 {
 	return 0
 }
 
-func getMin(arr []int64) ([]int64,int64) {
+func getMin(arr []int64) ([]int64, int64) {
 	ele := arr[0]
 	arr = arr[1:]
-	return arr,ele
+	return arr, ele
 }
 
 func SelectSort(arr []int64) []int64 {
@@ -69,4 +123,15 @@ func SelectSort(arr []int64) []int64 {
 		arr[pos], arr[i] = arr[i], arr[pos]
 	}
 	return arr
+}
+
+
+func TestSolution3(t *testing.T){
+	var n,m int
+	fmt.Scan(&n,&m)
+	var height int
+	fmt.Scan(&height)
+	var query int
+	fmt.Scan(&query)
+
 }
