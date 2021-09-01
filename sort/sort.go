@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// 冒泡排序
+// BubbleSort 冒泡排序
 func BubbleSort(arr []int) []int {
 	for i := 0; i < len(arr); i++ {
 		exchange := false

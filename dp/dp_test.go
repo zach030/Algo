@@ -331,3 +331,30 @@ func startEachPlan(g taskGroup) {
 	}
 	fmt.Println(days)
 }
+
+func TestMaxSubArray(t *testing.T) {
+	fmt.Println(maxSubarraySumCircular([]int{5, -3, 5}))
+}
+
+func TestSocks(t *testing.T) {
+	maxProfit([]int{7, 1, 5, 3, 6, 4})
+}
+
+func TestBestSight(t *testing.T) {
+	fmt.Println(maxScoreSightseeingPair([]int{8, 1, 5, 2, 6}))
+	fmt.Println(maxScoreSightseeingPair([]int{1, 2}))
+	fmt.Println(maxScoreSightseeingPair([]int{7, 8, 8, 10}))
+	fmt.Println(maxScoreSightseeingPair([]int{7, 2, 6, 6, 9, 4, 3}))
+}
+
+func TestMinPath(t *testing.T) {
+	fmt.Println(minPathSum([][]int{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}))
+}
+
+func TestFindNumInMatrix(t *testing.T) {
+	findNumberIn2DArray([][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 20)
+}
+
+func TestReplaceString(t *testing.T) {
+	fmt.Println(replaceSpace("how are you"))
+}

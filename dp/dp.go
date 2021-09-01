@@ -351,26 +351,26 @@ func canPartition(nums []int) bool {
 	var sum int
 	size := len(nums)
 	for _, i2 := range nums {
-		sum+=i2
+		sum += i2
 	}
-	if sum%2!=0{
+	if sum%2 != 0 {
 		return false
 	}
 	sum = sum / 2
 	// dp[i][j] 选择前i个数字，容量为j的包，可以满足
-	dp:=make([][]bool,size+1)
+	dp := make([][]bool, size+1)
 	for i := 0; i <= size; i++ {
 		dp[i] = make([]bool, size+1)
 	}
 	for i := 0; i <= size; i++ {
-		dp[i][0]=true
+		dp[i][0] = true
 	}
 	for i := 1; i <= size; i++ {
 		for j := 1; j <= sum; j++ {
-			if j-nums[i-1]<0{
-				dp[i][j]=dp[i-1][j]
-			}else{
-				dp[i][j]=dp[i-1][j] || dp[i-1][j-nums[i-1]]
+			if j-nums[i-1] < 0 {
+				dp[i][j] = dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]]
 			}
 		}
 	}
@@ -379,5 +379,228 @@ func canPartition(nums []int) bool {
 
 // 最大子序和
 func maxSubArray(nums []int) int {
+	subMax := 0
+	max := nums[0]
+	for i := 0; i < len(nums); i++ {
+		if subMax >= 0 {
+			subMax += nums[i]
+		} else {
+			subMax = nums[i]
+		}
+		if subMax > max {
+			max = subMax
+		}
+	}
+	return max
+}
+
+// 环形数组最大子序和
+func maxSubarraySumCircular(nums []int) int {
+	dp := make([]int, len(nums)) // 以nums[i]结尾的最大子序和
+	dp[0] = nums[0]
+	maxAns, sum := nums[0], nums[0]
+	for i := 1; i < len(nums); i++ {
+		sum += nums[i]
+		dp[i] = nums[i] + max(dp[i-1], 0)
+		maxAns = max(dp[i], maxAns)
+	}
+	min := 0
+	for i := 1; i < len(nums)-1; i++ {
+		dp[i] = nums[i] + min2(0, dp[i-1])
+		min = min2(dp[i], min)
+	}
+	return max(sum-min, maxAns)
+}
+
+// 乘积最大子数组
+func maxProduct(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	maxDP := make([]int, 0, len(nums))
+	minDP := make([]int, 0, len(nums))
+	dp := make([]int, 0, len(nums))
+	maxDP[0], minDP[0], dp[0] = nums[0], nums[0], nums[0]
+	for i := 1; i < len(nums); i++ {
+		maxDP[i] = max3(maxDP[i-1]*nums[i], nums[i], minDP[i-1]*nums[i])
+		minDP[i] = min(maxDP[i-1]*nums[i], nums[i], minDP[i-1]*nums[i])
+		dp[i] = max(dp[i-1], maxDP[i])
+	}
+	return dp[len(nums)-1]
+}
+
+// 乘积为正数的最长子数组长度
+func getMaxLen(nums []int) int {
+	//dp[i]:前i个数中乘积为整数的子数组长度
 	return 0
+}
+
+// 买卖股票
+func maxProfit(prices []int) int {
+	// dp[i]=max(dp[i-1],prices[i]-min(price))
+	// min[i] : 前i天最小价格
+	dp, min := make([]int, len(prices)), make([]int, len(prices))
+	dp[0], min[0] = 0, prices[0]
+	for i := 1; i < len(prices); i++ {
+		if prices[i] < min[i-1] {
+			min[i] = prices[i]
+		} else {
+			min[i] = min[i-1]
+		}
+		dp[i] = max(dp[i-1], prices[i]-min[i])
+	}
+	fmt.Println(dp, min)
+	max := dp[0]
+	for i := 1; i < len(dp); i++ {
+		if dp[i] > max {
+			max = dp[i]
+		}
+	}
+	return max
+}
+
+// 可多次操作
+func maxProfit2(prices []int) int {
+	sum := 0
+	for i := 1; i < len(prices); i++ {
+		if prices[i] > prices[i-1] {
+			sum += prices[i] - prices[i-1]
+		}
+	}
+	return sum
+}
+
+// 最佳观光组合
+func maxScoreSightseeingPair(values []int) int {
+	preMax := values[0] + 0
+	// dp[i]=preMax+values[i]-i
+	res := 0
+	for i := 1; i < len(values); i++ {
+		res = max(res, preMax+values[i]-i)
+		preMax = max(preMax, values[i]+i)
+	}
+	return res
+}
+
+// 剑指 13
+func movingCount(m int, n int, k int) int {
+	visited := make([][]bool, m)
+	for i := 0; i < m; i++ {
+		visited[i] = make([]bool, n)
+		for j := 0; j < n; j++ {
+			visited[i][j] = false
+		}
+	}
+	return move(m, n, 0, 0, k, visited)
+}
+
+func move(m, n, i, j, k int, visited [][]bool) int {
+	if i >= m || i < 0 || j >= n || j < 0 || calcCount(i, j) > k || visited[i][j] {
+		return 0
+	}
+	visited[i][j] = true
+	return move(m, n, i+1, j, k, visited) + move(m, n, i, j+1, k, visited) + move(m, n, i-1, j, k, visited) + move(m, n, i, j-1, k, visited) + 1
+}
+
+func calcCount(m, n int) int {
+	return m/10 + m%10 + n/10 + n%10
+}
+
+var memo [][]int
+
+// 最小路径和
+func minPathSum(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	memo = make([][]int, m)
+	for i := 0; i < m; i++ {
+		memo[i] = make([]int, n)
+		for j := 0; j < n; j++ {
+			memo[i][j] = -1
+		}
+	}
+	return dp(grid, m-1, n-1)
+}
+
+func dp(grid [][]int, i, j int) int {
+	if i == 0 && j == 0 {
+		return grid[0][0]
+	}
+	if i < 0 || j < 0 {
+		return math.MaxInt16
+	}
+	if memo[i][j] != -1 {
+		return memo[i][j]
+	}
+	memo[i][j] = min2(dp(grid, i-1, j), dp(grid, i, j-1)) + grid[i][j]
+	return memo[i][j]
+}
+
+// 二维数组查找
+func findNumberIn2DArray(matrix [][]int, target int) bool {
+	x, y := len(matrix)-1, 0
+	for x >= 0 && y < len(matrix[0]) {
+		if matrix[x][y] > target {
+			x--
+		} else if matrix[x][y] < target {
+			y++
+		} else {
+			return true
+		}
+	}
+	return false
+}
+
+// 旋转数组的最小数字
+func minArray(numbers []int) int {
+	for i := 1; i < len(numbers); i++ {
+		if numbers[i] < numbers[i-1] {
+			return numbers[i]
+		}
+	}
+	return numbers[0]
+}
+
+// 矩阵中的路径
+func exist(board [][]byte, word string) bool {
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			if searchInMatrix(board, []byte(word), i, j, 0) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func searchInMatrix(board [][]byte, word []byte, i, j, k int) bool {
+	if i >= len(board) || j >= len(board[0]) || i < 0 || j < 0 || board[i][j] != word[k] {
+		return false
+	}
+	if k == len(word)-1 {
+		return true
+	}
+	board[i][j] = '0'
+	res := searchInMatrix(board, word, i+1, j, k+1) || searchInMatrix(board, word, i-1, j, k+1) || searchInMatrix(board, word, i, j+1, k+1) || searchInMatrix(board, word, i, j-1, k+1)
+	board[i][j] = word[k]
+	return res
+}
+
+// 替换空格
+func replaceSpace(s string) string {
+	o := []byte(s)
+	n := make([]byte, 0, len(o))
+	for i := 0; i < len(o); i++ {
+		if o[i] == ' ' {
+			n = append(n, []byte("%20")...)
+		} else {
+			n = append(n, o[i])
+		}
+	}
+	return string(n)
+}
+
+// 剪绳子
+func cuttingRope(n int) int {
+	// dp[i] 长度为i，剪成m段的最大乘积
+	// dp[i]=max(dp[i],max(j*(i-j),j*dp[i-j]))
 }

@@ -165,3 +165,27 @@ func reverse(a, b *ListNode) *ListNode {
 	}
 	return prev
 }
+
+// 合并有序链表
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	l := &ListNode{Val: 0}
+	head := l
+	for l1 != nil && l2 != nil {
+		head.Next = &ListNode{}
+		head = head.Next
+		if l1.Val <= l2.Val {
+			head.Val = l1.Val
+			l1 = l1.Next
+		} else {
+			head.Val = l2.Val
+			l2 = l2.Next
+		}
+	}
+	if l1 == nil {
+		head.Next = l2
+	}
+	if l2 == nil {
+		head.Next = l1
+	}
+	return l.Next
+}

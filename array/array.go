@@ -119,34 +119,53 @@ func partition(nums []int, left, right int) int {
 }
 
 // 下一个排列
-func nextPermutation(nums []int)  {
+func nextPermutation(nums []int) {
 	front := search(nums)
-	if front>=0{
-		back := searchBigger(nums,front)
-		nums[front],nums[back]=nums[back],nums[front]
+	if front >= 0 {
+		back := searchBigger(nums, front)
+		nums[front], nums[back] = nums[back], nums[front]
 	}
-	left,right := front+1,len(nums)-1
-	for left<right{
-		nums[left],nums[right]=nums[right],nums[left]
+	left, right := front+1, len(nums)-1
+	for left < right {
+		nums[left], nums[right] = nums[right], nums[left]
 		left++
 		right--
 	}
 }
 
-func search(arr []int)int{
+func search(arr []int) int {
 	size := len(arr)
-	front := size-2
-	for front>=0&& arr[front]>=arr[front+1]{
+	front := size - 2
+	for front >= 0 && arr[front] >= arr[front+1] {
 		front--
 	}
 	return front
 }
 
-func searchBigger(arr []int,target int)int{
+func searchBigger(arr []int, target int) int {
 	size := len(arr)
-	front := size-1
-	for front>0&&arr[front]<=arr[target]{
+	front := size - 1
+	for front > 0 && arr[front] <= arr[target] {
 		front--
 	}
 	return front
+}
+
+// 奇数位于偶数前面
+func exchange(nums []int) []int {
+	f, l := 0, len(nums)-1
+	for f < l {
+		if nums[f]%2 != 0 {
+			f++
+			continue
+		}
+		if nums[l]%2 == 0 {
+			l--
+			continue
+		}
+		nums[f], nums[l] = nums[l], nums[f]
+		f++
+		l--
+	}
+	return nums
 }

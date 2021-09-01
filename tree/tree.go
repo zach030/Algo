@@ -662,3 +662,20 @@ func verifyPostorder(postorder []int) bool {
 //	}
 //
 //}
+
+// 重建二叉树
+func buildTree2(preorder []int, inorder []int) *TreeNode {
+	if len(preorder) == 0 {
+		return nil
+	}
+	root := &TreeNode{Val: preorder[0]}
+	idx := 0
+	for i := 0; i < len(inorder); i++ {
+		if inorder[i] == root.Val {
+			idx = i
+		}
+	}
+	root.Left = buildTree2(preorder[1:len(inorder[:idx])+1], inorder[:idx])
+	root.Right = buildTree2(preorder[len(inorder[:idx])+1:], inorder[idx+1:])
+	return root
+}
