@@ -2,6 +2,7 @@ package dp
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -357,4 +358,131 @@ func TestFindNumInMatrix(t *testing.T) {
 
 func TestReplaceString(t *testing.T) {
 	fmt.Println(replaceSpace("how are you"))
+}
+
+func TestMaxSubMatrix(t *testing.T) {
+	fmt.Println(maxSubMatrix([][]int{{1, 2, -3}, {3, 4, -3}, {-5, -6, -7}}, 3))
+}
+
+func maxSubMatrix(matrix [][]int, n int) int {
+	tmp := make([]int, n)
+	for i := 0; i < len(tmp); i++ {
+		tmp[i] = 0
+	}
+	max := math.MinInt32
+	for i := 0; i < n; i++ {
+		tmp = matrix[i]
+		if maxSubArr(tmp, n) > max {
+			max = maxSubArr(tmp, n)
+		}
+		for j := i + 1; j < n; j++ {
+			for k := 0; k < n; k++ {
+				tmp[k] += matrix[j][k]
+			}
+			if maxSubArr(tmp, n) > max {
+				max = maxSubArr(tmp, n)
+			}
+		}
+	}
+	return max
+}
+
+// 最大连续子序列和
+func maxSubArr(arr []int, n int) int {
+	sum := 0
+	max := math.MinInt32
+	for i := 0; i < n; i++ {
+		sum += arr[i]
+		if sum < 0 {
+			sum = 0
+		}
+		if sum > max {
+			max = sum
+		}
+	}
+	return max
+}
+
+func TestXhsSolution2(t *testing.T) {
+	fmt.Println(Solution2("gotogo"))
+}
+
+func Solution2(input string) int {
+	n, ans := len(input), 1
+	dp := make([]int, n/2+1)
+	for i := 0; i < len(dp); i++ {
+		dp[i] = -1
+	}
+	dp[0] = 0
+	left := 0
+	for i := 1; i <= n/2; i++ {
+		if check(input, left, i, n) {
+			dp[i] = dp[left] + 1
+			left = i
+		}
+	}
+	fmt.Println(dp)
+	var ret = 0
+	if left*2 < n {
+		ret = 1
+	}
+	if ans > dp[left]*2+ret {
+		return ans
+	} else {
+		return dp[left]*2 + ret
+	}
+}
+
+var sum = make([][]string, 0)
+
+func TestSolution3(t *testing.T) {
+	s := "gotogo"
+	arr := make([]string, 0)
+	help(s, 0, len(s), arr)
+	fmt.Println(sum)
+}
+
+func help(s string, start, end int, list []string) {
+	if start == end {
+		sum = append(sum, list)
+		return
+	}
+	for i := end; i > start; i-- {
+		if checkString(s, start, i-1) {
+			tmp := s[start:i]
+			list = append(list, tmp)
+			help(s, i, end, list)
+			list = list[:len(list)-1]
+		}
+	}
+}
+
+// 是否回文字符串
+func check(input string, j, i, n int) bool {
+	for m := j; m < i; m++ {
+		if input[m] != input[n-i+m-j] {
+			return false
+		}
+	}
+	return true
+}
+
+func checkString(input string, start, end int) bool {
+	if start > end {
+		return true
+	}
+	if input[start] == input[end] {
+		return true
+		//return checkString(input, start+1, end-1)
+	}
+	return false
+}
+
+func TestGraph(t *testing.T) {
+
+}
+
+
+func graph(){
+
 }

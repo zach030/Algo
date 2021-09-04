@@ -603,4 +603,10 @@ func replaceSpace(s string) string {
 func cuttingRope(n int) int {
 	// dp[i] 长度为i，剪成m段的最大乘积
 	// dp[i]=max(dp[i],max(j*(i-j),j*dp[i-j]))
+	return 0
+}
+
+// 顺时针打印
+func spiralOrder(matrix [][]int) []int {
+	return nil
 }
