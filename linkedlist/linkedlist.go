@@ -189,3 +189,24 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return l.Next
 }
+
+// 找出公共节点
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	if headA == nil || headB == nil {
+		return nil
+	}
+	a, b := headA, headB
+	for a != b {
+		if a == nil {
+			a = headB
+			continue
+		}
+		if b == nil {
+			b = headA
+			continue
+		}
+		a = a.Next
+		b = b.Next
+	}
+	return a
+}

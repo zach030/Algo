@@ -610,3 +610,56 @@ func cuttingRope(n int) int {
 func spiralOrder(matrix [][]int) []int {
 	return nil
 }
+
+type Node struct {
+	Val    int
+	Next   *Node
+	Random *Node
+}
+
+func copyRandomList(head *Node) *Node {
+	if head == nil {
+		return nil
+	}
+	record := make(map[*Node]*Node, 0)
+	curr := head
+	for curr != nil {
+		record[curr] = &Node{Val: curr.Val}
+		curr = curr.Next
+	}
+	curr = head
+	for curr != nil {
+		record[curr].Next = record[curr.Next]
+		record[curr].Random = record[curr.Random]
+		curr = curr.Next
+	}
+	return record[head]
+}
+
+// 走矩阵 最大值
+func maxValue(grid [][]int) int {
+	// dp[i][j]:走到（i，j）最大值
+	m, n := len(grid), len(grid[0])
+	dp := make([][]int, len(grid))
+	for i := 0; i < len(grid); i++ {
+		dp[i] = make([]int, len(grid[0]))
+	}
+	dp[0][0] = grid[0][0]
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if i == 0 && j == 0 {
+				continue
+			}
+			if i == 0 {
+				dp[i][j] = dp[i][j-1] + grid[i][j]
+				continue
+			}
+			if j == 0 {
+				dp[i][j] = dp[i-1][j] + grid[i][j]
+				continue
+			}
+			dp[i][j] = max(dp[i][j-1], dp[i-1][j]) + grid[i][j]
+		}
+	}
+	return dp[m-1][n-1]
+}

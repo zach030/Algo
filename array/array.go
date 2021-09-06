@@ -169,3 +169,67 @@ func exchange(nums []int) []int {
 	}
 	return nums
 }
+
+// 只出现一次
+func singleNumbers(nums []int) []int {
+	record := make(map[int]bool, 0)
+	for i := 0; i < len(nums); i++ {
+		if _, ok := record[nums[i]]; ok {
+			delete(record, nums[i])
+			continue
+		}
+		record[nums[i]] = true
+	}
+	ret := make([]int, 0)
+	for val, _ := range record {
+		ret = append(ret, val)
+	}
+	return ret
+}
+
+func twoSum(nums []int, target int) []int {
+	left, right := 0, len(nums)-1
+	for nums[left]+nums[right] != target {
+		if nums[left]+nums[right] > target {
+			right--
+			continue
+		}
+		if nums[left]+nums[right] < target {
+			left++
+			continue
+		}
+		break
+	}
+	return []int{nums[left], nums[right]}
+}
+
+// 拼接最小的数
+func minNumber(nums []int) string {
+	return ""
+}
+
+func findContinuousSequence(target int) [][]int {
+	left, right, half := 1, 2, target/2+1
+	ret := make([][]int, 0)
+	for left <= half {
+		if calcSum(left, right) < target {
+			right++
+			continue
+		}
+		if calcSum(left, right) > target {
+			left++
+			continue
+		}
+		arr := make([]int, 0, right-left)
+		for i := left; i <= right; i++ {
+			arr = append(arr, i)
+		}
+		ret = append(ret, arr)
+		left++
+	}
+	return ret
+}
+
+func calcSum(a, b int) int {
+	return (a + b) * (b - a + 1) / 2
+}
