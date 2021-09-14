@@ -289,8 +289,6 @@ func fullSort(arr []int) {
 	}
 }
 
-
-
 //1 a
 //1 b
 //2 6
@@ -358,4 +356,66 @@ func query(str string, pos int) int {
 		return step
 	}
 	return -1
+}
+
+func TestBaiduSolution1(t *testing.T) {
+	_, k := 2, 2
+	matrix := [][]int{{0, 1}, {1, 0}}
+	fmt.Println(bigger(k, matrix))
+}
+
+func bigger(k int, matrix [][]int) [][]int {
+	e := len(matrix)
+	bigM := make([][]int, k*e)
+	for i := 0; i < k*e; i++ {
+		bigM[i] = make([]int, k*e)
+	}
+	for i := 0; i < len(bigM); i++ {
+		for j := 0; j < len(bigM); j++ {
+			hi,hj:=i/k,j/k
+			bigM[i][j]=matrix[hi][hj]
+		}
+	}
+	return bigM
+}
+
+func TestBaiduSolution2(t *testing.T) {
+	n := 30
+	eulerInit()
+	fmt.Println(phi[n])
+}
+
+var phi = make([]int, 1010)
+
+func eulerInit() {
+	top := 1000
+	for i := 2; i <= top; i++ {
+		phi[i] = i
+	}
+	for i := 2; i <= top; i++ {
+		if phi[i] == i {
+			for j := i; j <= top; j += i {
+				phi[j] -= phi[j] / i
+			}
+		}
+		phi[i] += phi[i-1]
+	}
+	fmt.Println(phi)
+}
+
+// n以内互为质数的对数
+func getPair(n int64) int64 {
+	res := n
+	for i := int64(2); i*i <= n; i++ {
+		if n%i == 0 {
+			res = (res / i) * (i - 1)
+			for n%i == 0 {
+				n /= i
+			}
+		}
+	}
+	if n != 1 {
+		res = (res / n) * (n - 1)
+	}
+	return res
 }

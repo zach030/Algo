@@ -7,19 +7,22 @@ import (
 
 // 无重复字符最长子串
 func lengthOfLongestSubstring(s string) int {
-	size := len(s)
-	start, end := 0, 0
-	max := 0
-	filter := make(map[string]int, 0)
-	for end < size {
-		if nextIndex, ok := filter[string(s[end])]; ok {
-			start = nextIndex
+	window := make(map[uint8]int, 0)
+	left, right := 0, 0
+	max := 1
+	for right < len(s) {
+		char := s[right]
+		right++
+		_, ok := window[char]
+		for ok {
+			delete(window, s[left])
+			left++
+			_, ok = window[char]
 		}
-		if end-start+1 > max {
-			max = end - start + 1
+		window[char]++
+		if right-left > max {
+			max = right - left
 		}
-		filter[string(s[end])] = end + 1
-		end++
 	}
 	return max
 }
@@ -212,7 +215,7 @@ func lengthOfLongestSubstring2(s string) int {
 			left++
 			window[d]--
 		}
-		maxSize = Max(maxSize,right-left)
+		maxSize = Max(maxSize, right-left)
 	}
 	return maxSize
 }

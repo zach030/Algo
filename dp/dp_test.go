@@ -479,10 +479,123 @@ func checkString(input string, start, end int) bool {
 }
 
 func TestGraph(t *testing.T) {
+	//fmt.Println(minEdit("{[][}}"))
+	//fmt.Println(minEdit("[][]{{]]"))
+	//fmt.Println(integerBreak(5))
+	//fmt.Println(integerBreak(6))
+	//fmt.Println(integerBreak(7))
+
+	fmt.Println(calc(15))
+	fmt.Println(calc(18))
+	fmt.Println(calc(21))
+}
+
+func threeSum(nums []int, target int) [][]int {
+	ret := make([][]int, 0)
+	if len(nums) < 3 {
+		return nil
+	}
+	for i := 0; i < len(nums); i++ {
+		pos := i
+		for j := i + 1; j < len(nums); j++ {
+			if nums[j] < nums[pos] {
+				pos = j
+			}
+		}
+		nums[pos], nums[i] = nums[i], nums[pos]
+	}
+	size := len(nums)
+	for i := 0; i < size; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		left, right := i+1, size-1
+		for left < right {
+			if nums[i]+nums[left]+nums[right] == target {
+				ret = append(ret, []int{nums[i], nums[left], nums[right]})
+				for left < right && nums[left] == nums[left+1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right-1] {
+					right--
+				}
+				left++
+				right--
+			} else if nums[i]+nums[left]+nums[right] > target {
+				right--
+			} else {
+				left++
+			}
+		}
+	}
+	return ret
+}
+
+func calc(n int) int {
+	sum := n / 3
+	arr := make([]int, sum)
+	for i := 0; i < len(arr); i++ {
+		arr[i] = i + 1
+	}
+	fmt.Println("after split arr:", arr, "target:", sum)
+	fmt.Println(threeSum(arr, sum))
+	return len(threeSum(arr, sum))
+}
+
+//2
+//{[][}}
+//[][]{{]]
+func graph() {
 
 }
 
+func minEdit(s string) int {
+	num := 0
+	stack := make([]uint8, 0)
+	for i := 0; i < len(s); i++ {
+		if isLeft(s[i]) {
+			stack = append(stack, s[i])
+			continue
+		}
+		if len(stack) == 0 || !match(stack[len(stack)-1], s[i]) {
+			num++
+		}
+		stack = stack[:len(stack)-1]
+	}
+	return num
+}
 
-func graph(){
+func isLeft(a uint8) bool {
+	if a == '(' || a == '[' || a == '{' {
+		return true
+	}
+	return false
+}
 
+func match(a, b uint8) bool {
+	if a == '(' && b == ')' {
+		return true
+	}
+	if a == '[' && b == ']' {
+		return true
+	}
+	if a == '{' && b == '}' {
+		return true
+	}
+	return false
+}
+
+func minOp(s string) int {
+	size := len(s) + 1
+	l, r := make([]int, 1000), make([]int, 1000)
+	for i := 1; i <= size; i++ {
+		if s[i] == '(' {
+			l[i] = l[i-1] + 1
+			r[i] = min2(l[i-1], r[i-1])
+		} else {
+			l[i] = l[i-1]
+			r[i] = r[i-1] + 1
+		}
+	}
+	return min2(l[size], r[size])
 }

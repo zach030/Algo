@@ -19,7 +19,11 @@ func TestDailyTemperature(t *testing.T) {
 }
 
 func TestNextArr(t *testing.T) {
-	arr := []int{1,5,1}
+	arr := []int{1, 5, 1}
 	nextPermutation(arr)
 	fmt.Println(arr)
+}
+
+func TestSearchRange(t *testing.T) {
+	searchRange([]int{5, 7, 7, 8, 8, 10}, 8)
 }

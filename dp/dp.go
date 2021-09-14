@@ -663,3 +663,8 @@ func maxValue(grid [][]int) int {
 	}
 	return dp[m-1][n-1]
 }
+
+// 合法的括号
+func generateParenthesis(n int) []string {
+	return nil
+}

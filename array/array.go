@@ -2,6 +2,7 @@ package array
 
 import (
 	"math/rand"
+	"sort"
 	"time"
 )
 
@@ -232,4 +233,41 @@ func findContinuousSequence(target int) [][]int {
 
 func calcSum(a, b int) int {
 	return (a + b) * (b - a + 1) / 2
+}
+
+func min(a, b int) int {
+	if a <= b {
+		return a
+	}
+	return b
+}
+func max(a, b int) int {
+	if a >= b {
+		return a
+	}
+	return b
+}
+
+func maxArea(height []int) int {
+	area := 0
+	left, right := 0, len(height)-1
+	for left < right {
+		if height[left] <= height[right] {
+			area = max(area, height[left]*(right-left))
+			left++
+		} else {
+			area = max(area, height[right]*(right-left))
+			right--
+		}
+	}
+	return area
+}
+
+func searchRange(nums []int, target int) []int {
+	leftmost := sort.SearchInts(nums, target)
+	if leftmost == len(nums) || nums[leftmost] != target {
+		return []int{-1, -1}
+	}
+	rightmost := sort.SearchInts(nums, target + 1) - 1
+	return []int{leftmost, rightmost}
 }

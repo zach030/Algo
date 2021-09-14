@@ -20,39 +20,31 @@ type task struct {
 }
 
 func main() {
-	var group int
-	fmt.Scan(&group)
-	groups := make([]taskGroup, 0, group)
-	for i := 0; i < group; i++ {
-		var num int
-		fmt.Scan(&num)
-		tasks := make(map[int]*task, num)
-		noDep := make(map[int]*task, 0)
-		for j := 1; j <= num; j++ {
-			t := &task{id: j}
-			tasks[t.id] = t
-			fmt.Scan(&t.day, &t.dNum)
-			t.depends = make(map[int]*task)
-			t.children = make(map[int]*task)
-			if t.dNum == 0 {
-				noDep[t.id] = t
-			} else {
-				for k := 0; k < t.dNum; k++ {
-					var dID int
-					fmt.Scan(&dID)
-					t.depends[dID] = tasks[dID]
-					tasks[dID].children[t.id] = t
-				}
-			}
-		}
-		groups = append(groups, taskGroup{
-			num:     num,
-			allTask: tasks,
-			noDep:   noDep,
-		})
+	dep := map[string][]string{
+		"1": {"2","3"},
+		"2": {"3"},
+		"3":nil,
 	}
+	f(dep)
+}
 
-	startPlan(groups)
+func dis(a, b int) int {
+	if a > b {
+		return a - b
+	}
+	return b - a
+}
+
+func calcCost(a, b []int, x, y, z int) int {
+	a1, a2 := a[0], a[1]
+	b1, b2 := b[0], b[1]
+	if a1 == b1 {
+		return x*dis(a2, b2) + z
+	}
+	if a2 == b2 {
+		return x*dis(a1, b1) + z
+	}
+	return x*(dis(a1, b1)+dis(a2, b2)) + y + z
 }
 
 func startPlan(groups []taskGroup) {
@@ -125,13 +117,41 @@ func SelectSort(arr []int64) []int64 {
 	return arr
 }
 
-
-func TestSolution3(t *testing.T){
-	var n,m int
-	fmt.Scan(&n,&m)
+func TestSolution3(t *testing.T) {
+	var n, m int
+	fmt.Scan(&n, &m)
 	var height int
 	fmt.Scan(&height)
 	var query int
 	fmt.Scan(&query)
 
+}
+
+func f(p map[string][]string) {
+	for i, c := range topoSort(p) {
+		fmt.Printf("%d:\t%s\n", i+1, c)
+	}
+}
+
+func topoSort(m map[string][]string) []string {
+	var order []string
+	visited := make(map[string]bool)
+	var visitAll func(items []string)
+	visitAll = func(items []string) {
+		for _, item := range items {
+			if !visited[item] {
+				visited[item] = true
+				visitAll(m[item])
+				order = append(order, item)
+			}
+		}
+	}
+
+	var keys []string
+	for key := range m {
+		keys = append(keys, key)
+	}
+	//sort.Strings(keys)
+	visitAll(keys)
+	return order
 }
