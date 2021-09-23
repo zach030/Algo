@@ -23,9 +23,7 @@ func TestInsertSort(t *testing.T) {
 }
 
 func TestQuickSort(t *testing.T) {
-	//QuickSort(array, 0, len(array)-1)
-
-	//quickSort(array, 0, len(array)-1)
+	array := []int{2, 4, 1, 7, 6, 8, 12, 3, 4, 7, 2, 11, 23, 9}
 	sortArray(array)
 	fmt.Println(array)
 }
@@ -81,4 +79,44 @@ func Max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+type LinkedList struct {
+	val  int
+	next *LinkedList
+}
+
+func TestReverseLinkedList(t *testing.T) {
+	head := &LinkedList{val: 1, next: &LinkedList{val: 2, next: &LinkedList{val: 3}}}
+	ret := ReverseList(head)
+	for ret != nil {
+		fmt.Println(ret.val)
+		ret = ret.next
+	}
+}
+
+func ReverseList(head *LinkedList) *LinkedList {
+	prev := &LinkedList{}
+	curr := head
+	for curr != nil {
+		tmp := curr.next
+		curr.next = prev
+		prev = curr
+		curr = tmp
+	}
+	return prev
+}
+
+func TestMergeSort(t *testing.T) {
+	//n1 := []int{2, 3, 4, 5}
+	//n2 := []int{8, 7, 9, 1}
+	//arr := merge(n1, n2)
+	//fmt.Println(arr)
+
+	nums := []int{2, 4, 3, 5, 8, 7, 9, 1}
+	mergeSort(nums, 0, len(nums))
+	fmt.Println(nums)
+
+	//MergeSort(nums, 0, len(nums))
+	//fmt.Println(nums)
 }

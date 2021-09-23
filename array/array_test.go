@@ -27,3 +27,9 @@ func TestNextArr(t *testing.T) {
 func TestSearchRange(t *testing.T) {
 	searchRange([]int{5, 7, 7, 8, 8, 10}, 8)
 }
+
+func TestMoveZero(t *testing.T) {
+	nums := []int{3, 1, 0, 2, 0, 7, 1, 0}
+	moveZeroes(nums)
+	fmt.Println(nums)
+}
