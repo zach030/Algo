@@ -19,13 +19,27 @@ type task struct {
 	children map[int]*task
 }
 
+var match = map[int]int{0: 1, 2: 3}
+
 func main() {
-	dep := map[string][]string{
-		"1": {"2","3"},
-		"2": {"3"},
-		"3":nil,
+	nums := []int{0, 0, 0, 1, 1, 1}
+	count := 0
+	stack := make([]int, 0)
+	stack = append(stack, nums[0])
+	for len(stack) != 0 {
+		for i := 1; i < len(nums); i++ {
+			if nums[i] == 0 || nums[i] == 2 {
+				stack = append(stack, nums[i])
+				continue
+			}
+			if nums[i] == match[stack[len(stack)-1]] {
+				count += 2
+				stack = stack[:len(stack)-1]
+				continue
+			}
+		}
 	}
-	f(dep)
+	fmt.Println(count)
 }
 
 func dis(a, b int) int {
