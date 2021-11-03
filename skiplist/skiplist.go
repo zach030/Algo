@@ -2,10 +2,16 @@ package skiplist
 
 import (
 	"bytes"
+	"math/rand"
+)
+
+const (
+	defaultMaxLevel = 48
 )
 
 type SkipList struct {
-	header *Element
+	header   *Element
+	maxLevel int
 }
 
 type Entry struct {
@@ -90,8 +96,55 @@ func (s *SkipList) Search(key []byte) *Entry {
 	return nil
 }
 
+// a(1)--------------------e(5)--------------------i(9)
+// a(1)--------c(3)--------e(5)--------g(7)--------i(9)
+// a(1)--b(2)--c(3)--d(4)--e(5)--f(6)--g(7)--h(8)--i(9)
+
 func (s *SkipList) Add(entry *Entry) error {
+	var elem *Element
+	prev := s.header
+	i := len(s.header.levels) - 1
+	score := calcScore(entry.Key)
+	// 记录所有level要插入的前驱节点
+	var prevElemHeaders [defaultMaxLevel]*Element
+	for i >= 0 {
+		prevElemHeaders[i] = prev
+		for next := prev.levels[i]; next != nil; next = prev.levels[i] {
+			if comp := compare(score, entry.Key, next); comp <= 0 {
+				if comp == 0 {
+					// exist same key
+					elem = next
+					elem.entry = entry
+					return nil
+				}
+				break
+			}
+			prev = next
+			prevElemHeaders[i] = prev
+		}
+		i--
+	}
+	level := s.randLevel()
+	elem = newElement(score, entry, level)
+	//to add elem to the skiplist
+	for i := 0; i < level; i++ {
+		elem.levels[i] = prevElemHeaders[i].levels[i]
+		prevElemHeaders[i].levels[i] = elem
+	}
 	return nil
+}
+
+func (s *SkipList) randLevel() int {
+	if s.maxLevel <= 1 {
+		return 1
+	}
+	i := 1
+	for ; i < s.maxLevel; i++ {
+		if rand.Intn((1000)%2) == 0 {
+			return i
+		}
+	}
+	return i
 }
 
 func calcScore(key []byte) (score float64) {
