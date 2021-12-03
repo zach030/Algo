@@ -17,3 +17,7 @@ func Test_reversePrint(t *testing.T) {
 	}
 	fmt.Println(reversePrint(list))
 }
+
+func TestCopyList(t *testing.T) {
+
+}
