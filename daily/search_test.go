@@ -17,3 +17,27 @@ func TestFindInMatrix(t *testing.T) {
 	fmt.Println(matrix[1][0])
 	fmt.Println(findNumberIn2DArray(matrix, 2))
 }
+
+func TestMinArr(t *testing.T) {
+	a := minArray([]int{3, 4, 5, 1, 2})
+	fmt.Println(a)
+}
+
+func TestUniqCha(t *testing.T) {
+	fmt.Println(string(firstUniqChar("loveleetcode")))
+}
+
+func TestLevelOrder(t *testing.T) {
+	tree := &TreeNode{
+		Val: 3,
+		Left: &TreeNode{
+			Val: 9,
+		},
+		Right: &TreeNode{
+			Val:   20,
+			Left:  &TreeNode{Val: 15},
+			Right: &TreeNode{Val: 7},
+		},
+	}
+	fmt.Println(levelOrder(tree))
+}
