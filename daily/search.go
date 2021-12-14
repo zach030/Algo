@@ -214,3 +214,57 @@ func reverse(nums []int) []int {
 	}
 	return nums
 }
+
+// 树的子结构
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+	if A == nil || B == nil {
+		return false
+	}
+	return recur(A, B) || isSubStructure(A.Left, B) || isSubStructure(A.Right, B)
+}
+
+func recur(A, B *TreeNode) bool {
+	if B == nil {
+		return true
+	}
+	if A == nil || A.Val != B.Val {
+		return false
+	}
+	return recur(A.Left, B.Left) && recur(A.Right, B.Right)
+}
+
+func mirrorTree(root *TreeNode) *TreeNode {
+	var fun func(root *TreeNode)
+	fun = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		left := root.Left
+		root.Left = root.Right
+		root.Right = left
+		fun(root.Left)
+		fun(root.Right)
+	}
+	fun(root)
+	return root
+}
+
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	var dfs func(left, right *TreeNode) bool
+	dfs = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
+			return true
+		}
+		if left == nil || right == nil {
+			return false
+		}
+		if right.Val != left.Val {
+			return false
+		}
+		return dfs(left.Left, right.Right) && dfs(left.Right, right.Left)
+	}
+	return dfs(root.Left, root.Right)
+}
