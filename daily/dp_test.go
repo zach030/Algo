@@ -26,3 +26,9 @@ func TestMaxValue(t *testing.T) {
 	}
 	fmt.Println(maxValue(g))
 }
+
+func TestTranslateNum(t *testing.T) {
+	n := 12258
+	res := translateNum(n)
+	fmt.Println(res)
+}

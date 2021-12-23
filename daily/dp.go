@@ -1,6 +1,9 @@
 package daily
 
-import "math"
+import (
+	"math"
+	"strconv"
+)
 
 // 斐波拉契数列，简单的动态规划
 // f(n)=f(n-1)+f(n-2)，因为只需要前两个数相加，可以只保留两个变量
@@ -134,4 +137,44 @@ func maxValue(grid [][]int) int {
 		}
 	}
 	return dp[m-1][n-1]
+}
+
+// 给定翻译规则0-a，1-b，....25-z
+// 给定数组，求出可能的翻译数目 eg. 12258
+// dp[n]：前n个数的翻译数目,若dp[n-1]不可翻译:dp[n]=dp[n-1];可翻译：dp[n]=dp[n-1]+dp[n-2]
+func translateNum(num int) int {
+	str := strconv.Itoa(num)
+	a, b := 1, 1
+	for i := 2; i <= len(str); i++ {
+		s := str[i-2 : i]
+		var c int
+		if s >= "10" && s <= "25" {
+			c = a + b
+		} else {
+			c = a
+		}
+		b = a
+		a = c
+	}
+	return a
+}
+
+// 不含重复字符最长子串
+// dp[i]
+func lengthOfLongestSubstring(s string) int {
+	window := make(map[uint8]int)
+	left, right := 0, 0
+	var size = 0
+	for right < len(s) {
+		rc := s[right]
+		window[rc]++
+		right++
+		for window[rc] > 1 {
+			lc := s[left]
+			window[lc]--
+			left++
+		}
+		size = max(size, right-left)
+	}
+	return size
 }
