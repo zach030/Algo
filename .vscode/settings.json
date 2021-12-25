@@ -1,0 +1,8 @@
+{
+    "workbench.externalUriOpeners": {
+    
+    },
+    "settings":{
+        "go.testFlags": ["-v"],
+    }
+}

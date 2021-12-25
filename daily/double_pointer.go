@@ -1,5 +1,10 @@
 package daily
 
+import (
+	"log"
+	"strings"
+)
+
 // 删除链表中的指定节点
 func deleteNode(head *ListNode, val int) *ListNode {
 	if head.Val == val {
@@ -80,4 +85,54 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 		b = b.Next
 	}
 	return a
+}
+
+// 使得所有奇数在数组的前半部分，所有偶数在数组的后半部分
+// [1,2,3,4] ==> [1,3,2,4]
+func exchange(nums []int) []int {
+	left, right := 0, len(nums)-1
+	for left < right {
+		if nums[left]%2 != 0 {
+			left++
+			continue
+		}
+		if nums[right]%2 == 0 {
+			right--
+			continue
+		}
+		nums[left], nums[right] = nums[right], nums[left]
+		left++
+		right--
+	}
+	return nums
+}
+
+// 递增排序的数组，找和为target的组合
+func twoSum(nums []int, target int) []int {
+	var ret []int
+	left, right := 0, len(nums)-1
+	for left < right {
+		if nums[left]+nums[right] > target {
+			right--
+			continue
+		}
+		if nums[left]+nums[right] < target {
+			left++
+			continue
+		}
+		return []int{nums[left], nums[right]}
+	}
+	return ret
+}
+
+// 反转单词顺序
+// "the sky is blue" ===> "blue is sky the"
+func reverseWords(s string) string {
+	if len(s) == 0 {
+		return ""
+	}
+	s = strings.TrimLeft(s, " ")
+	s = strings.TrimRight(s, " ")
+	log.Println(strings.Split(s, " "))
+	return ""
 }

@@ -32,3 +32,18 @@ func TestMergeList(t *testing.T) {
 		h = h.Next
 	}
 }
+
+func Test_exchange(t *testing.T) {
+	t1 := []int{1, 2, 3, 4}
+	t2 := []int{2, 4, 3, 1}
+	t3 := []int{1, 3, 4, 2}
+
+	fmt.Println(exchange(t1))
+	fmt.Println(exchange(t2))
+	fmt.Println(exchange(t3))
+}
+
+func Test_reverseWords(t *testing.T) {
+	words := "  the   sky is blue"
+	reverseWords(words)
+}
