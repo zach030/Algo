@@ -1,7 +1,6 @@
 package daily
 
 import (
-	"log"
 	"strings"
 )
 
@@ -133,6 +132,13 @@ func reverseWords(s string) string {
 	}
 	s = strings.TrimLeft(s, " ")
 	s = strings.TrimRight(s, " ")
-	log.Println(strings.Split(s, " "))
-	return ""
+	str := strings.Split(s, " ")
+	arr := make([]string, 0)
+	for i := len(str) - 1; i >= 0; i-- {
+		if str[i] == "" {
+			continue
+		}
+		arr = append(arr, str[i])
+	}
+	return strings.Join(arr, " ")
 }

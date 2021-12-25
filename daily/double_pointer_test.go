@@ -45,5 +45,5 @@ func Test_exchange(t *testing.T) {
 
 func Test_reverseWords(t *testing.T) {
 	words := "  the   sky is blue"
-	reverseWords(words)
+	fmt.Println(reverseWords(words))
 }
