@@ -268,3 +268,52 @@ func isSymmetric(root *TreeNode) bool {
 	}
 	return dfs(root.Left, root.Right)
 }
+
+// 矩阵board中是否包含单词word
+func exist(board [][]byte, word string) bool {
+	row, col := len(board), len(board[0])
+	var dfs func(board [][]byte, i, j, k int) bool
+	dfs = func(board [][]byte, i, j, k int) bool {
+		if i >= row || i < 0 || j >= col || j < 0 || board[i][j] != word[k] {
+			return false
+		}
+		if k == len(word)-1 {
+			return true
+		}
+		board[i][j] = byte(' ')
+		res := dfs(board, i, j+1, k+1) || dfs(board, i+1, j, k+1) || dfs(board, i, j-1, k+1) || dfs(board, i-1, j, k+1)
+		board[i][j] = word[k]
+		return res
+	}
+	for i := 0; i < row; i++ {
+		for j := 0; j < col; j++ {
+			if dfs(board, i, j, 0) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// [0,0]-->[m,n]矩阵 坐标和不超过k，可以有走多少个格子
+func movingCount(m int, n int, k int) int {
+	visited := make([][]bool, m)
+	for i := 0; i < m; i++ {
+		visited[i] = make([]bool, n)
+		for j := 0; j < n; j++ {
+			visited[i][j] = false
+		}
+	}
+	sum := func(i, j int) int {
+		return i/10 + i%10 + j/10 + j%10
+	}
+	var dfs func(i, j int) int
+	dfs = func(i, j int) int {
+		if i >= m || i < 0 || j >= n || j < 0 || visited[i][j] || sum(i, j) > k {
+			return 0
+		}
+		visited[i][j] = true
+		return dfs(i+1, j) + dfs(i-1, j) + dfs(i, j+1) + dfs(i, j-1) + 1
+	}
+	return dfs(0, 0)
+}
