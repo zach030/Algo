@@ -317,3 +317,46 @@ func movingCount(m int, n int, k int) int {
 	}
 	return dfs(0, 0)
 }
+
+// 查找二叉树和的路径
+// dfs+回溯：先递归，target每次减去root的值，当左叶子节点不满足条件时，需要走右叶子结点，记住需要将路径中最后一个元素给去掉
+func pathSum(root *TreeNode, target int) [][]int {
+	ret := make([][]int, 0)
+	path := make([]int, 0)
+	var dfs func(root *TreeNode, target int)
+	dfs = func(root *TreeNode, target int) {
+		if root == nil {
+			return
+		}
+		target -= root.Val
+		path = append(path, root.Val)
+		defer func() { path = path[:len(path)-1] }()
+		if root.Left == nil && root.Right == nil && target == 0 {
+			ret = append(ret, append([]int(nil), path...))
+			return
+		}
+		dfs(root.Left, target)
+		dfs(root.Right, target)
+	}
+	dfs(root, target)
+	return ret
+}
+
+// 二叉搜索树，第k大元素
+func kthLargest(root *TreeNode, k int) int {
+	if root == nil {
+		return 0
+	}
+	tree := make([]int, 0)
+	var traverse func(root *TreeNode)
+	traverse = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		traverse(root.Left)
+		tree = append(tree, root.Val)
+		traverse(root.Right)
+	}
+	traverse(root)
+	return tree[len(tree)-k]
+}
