@@ -36,3 +36,8 @@ func isStraight(nums []int) bool {
 	//todo 12.28
 	return true
 }
+
+// 最小k个数
+func getLeastNumbers(arr []int, k int) []int {
+	return nil
+}
