@@ -80,3 +80,23 @@ func searchMatrix(matrix [][]int, target int) bool {
 func pos(row, col, idx int) (int, int) {
 	return idx / col, idx % col
 }
+
+// 旋转数组找最小值
+func findMin(nums []int) int {
+	left, right := 0, len(nums)-1
+	for left < right {
+		pivot := (right-left)/2 + left
+		if nums[pivot] < nums[right] {
+			right = pivot
+		}
+		if nums[pivot] > nums[right] {
+			left = pivot + 1
+		}
+	}
+	return nums[left]
+}
+
+// 寻找峰值，严格大于左右两个元素
+func findPeakElement(nums []int) int {
+	return 0
+}
